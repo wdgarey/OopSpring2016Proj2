@@ -1,0 +1,4 @@
+Event 1 scheduled for time : 0:0:10
+Executing event 1 at 0:0:10
+Call 0 arrived at 0:0:10.
+Stopping simulation b/c event queue is empty.
