@@ -37,7 +37,7 @@ int main()
     
     shared_ptr<CallAction> act(new CallAction());
     
-    act->generator = make_shared<NormRndGen>(6, 2);
+    act->generator = make_shared<ExpRndGen>(60, 40);
     
     for (int count = 0; count < 20; count++)
     {

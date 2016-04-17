@@ -14,7 +14,7 @@ namespace Project2
         : m_seconds (0)
     { }
     
-    SimTime::SimTime(const uint32_t seconds)
+    SimTime::SimTime(const double& seconds)
         : m_seconds (0)
     {
         this->SetSeconds(seconds);
@@ -28,7 +28,7 @@ namespace Project2
     
     void SimTime::From(const uint32_t& hours, const uint32_t& minutes, const uint32_t& seconds)
     {
-        uint32_t totalSeconds = 0;
+        double totalSeconds = 0.0;
         
         totalSeconds += hours * 3600;
         totalSeconds += minutes * 60;
@@ -37,15 +37,15 @@ namespace Project2
         this->SetSeconds(totalSeconds);
     }
     
-    uint32_t SimTime::GetSeconds() const
+    double SimTime::GetSeconds() const
     {
         return this->m_seconds;
     }
     
     bool SimTime::IsLaterThan(const SimTime& other) const
     {
-        uint32_t mySeconds = this->GetSeconds();
-        uint32_t theirSeconds = other.GetSeconds();
+        double mySeconds = this->GetSeconds();
+        double theirSeconds = other.GetSeconds();
         
         bool laterThan = mySeconds > theirSeconds;
         
@@ -61,9 +61,9 @@ namespace Project2
     
     SimTime SimTime::operator -(const SimTime& other) const
     {
-        uint32_t diff = 0;
-        uint32_t mySeconds = this->GetSeconds();
-        uint32_t theirSeconds = other.GetSeconds();
+        double diff = 0;
+        double mySeconds = this->GetSeconds();
+        double theirSeconds = other.GetSeconds();
         
         if (mySeconds > theirSeconds)
         {
@@ -79,22 +79,22 @@ namespace Project2
     
     SimTime SimTime::operator +(const SimTime& other) const
     {
-        uint32_t mySeconds = this->GetSeconds();
-        uint32_t theirSeconds = other.GetSeconds();
+        double mySeconds = this->GetSeconds();
+        double theirSeconds = other.GetSeconds();
         
-        uint32_t sum = mySeconds + theirSeconds;
+        double sum = mySeconds + theirSeconds;
         
         return SimTime(sum);
     }
     
-    void SimTime::SetSeconds(const uint32_t& seconds)
+    void SimTime::SetSeconds(const double& seconds)
     {
         this->m_seconds = seconds;
     }
     
     void SimTime::To(uint32_t& hours, uint32_t& minutes, uint32_t& seconds) const
     {
-        uint32_t secondsLeft = this->GetSeconds();
+        uint32_t secondsLeft = (uint32_t)(this->GetSeconds());
         
         hours = secondsLeft / 3600;
         

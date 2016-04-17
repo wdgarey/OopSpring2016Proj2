@@ -6,7 +6,6 @@
 #ifndef RND_GEN_H
 #define RND_GEN_H
 
-#include <cstdint>
 #include <memory>
 #include <random>
 
@@ -38,7 +37,7 @@ namespace Project2
          * Generates a random number and returns it.
          * @return The randomly generated number.
          */
-        virtual uint32_t Next() = 0;
+        virtual double Next() = 0;
         /**
          * The assignment operator of the RndGen class.
          * @param src The instance being assigned to.

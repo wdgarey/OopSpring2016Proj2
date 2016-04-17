@@ -6,7 +6,6 @@
 #ifndef EXP_RND_GEN_H
 #define EXP_RND_GEN_H
 
-#include <cstdlib>
 #include <memory>
 #include <random>
 
@@ -27,7 +26,7 @@ namespace Project2
          * @param bound The bound to apply the lambda to.
          * @param lambda The lambda to use.
          */
-        ExpRndGen(const uint32_t& bound, const double& lambda);
+        ExpRndGen(const double& bound, const double& lambda);
         /**
          * The copy constructor of the ExpRndGen class.
          * @param src The instance to copy.
@@ -37,7 +36,7 @@ namespace Project2
          * Gets the bound that the lambda is applied to.
          * @return The bound.
          */
-        virtual uint32_t GetBound() const;
+        virtual double GetBound() const;
         /**
          * Gets the exponential distribution.
          * @return The exponential distribution.
@@ -47,7 +46,7 @@ namespace Project2
          * Gets the next number in the exponential distribution sequence.
          * @return The next number.
          */
-        virtual uint32_t Next() override;
+        virtual double Next() override;
         /**
          * The assignment operator of the ExpRndGen class.
          * @param src The instance being assigned to.
@@ -58,7 +57,7 @@ namespace Project2
          * Sets the bound that the lambda is applied to.
          * @param bound The bound.
          */
-        virtual void SetBound(const uint32_t& bound);
+        virtual void SetBound(const double& bound);
         /**
          * Sets the exponential distribution.
          * @param dist The exponential distribution.
@@ -71,7 +70,7 @@ namespace Project2
          */
         virtual void Copy(const ExpRndGen& src);
     private:
-        uint32_t m_bound; /// The bound to use when applying lambda.
+        double m_bound; /// The bound to use when applying lambda.
         shared_ptr<exponential_distribution<> > m_dist; /// The exponential distribution.
     };
 }

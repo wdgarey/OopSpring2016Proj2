@@ -3,7 +3,6 @@
  * Date: April 17, 2016
  */
 
-#include <cstdlib>
 #include <memory>
 #include <random>
 
@@ -12,7 +11,7 @@
 
 namespace Project2
 {
-    ExpRndGen::ExpRndGen(const uint32_t& bound, const double& lambda)
+    ExpRndGen::ExpRndGen(const double& bound, const double& lambda)
         : m_bound(0),
           m_dist(0)
     {
@@ -28,7 +27,7 @@ namespace Project2
         this->Copy(src);
     }
     
-    uint32_t ExpRndGen::GetBound() const
+    double ExpRndGen::GetBound() const
     {
         return this->m_bound;
     }
@@ -38,15 +37,15 @@ namespace Project2
         return this->m_dist;
     }
     
-    uint32_t ExpRndGen::Next()
+    double ExpRndGen::Next()
     {
-        uint32_t bound = this->GetBound();
+        double bound = this->GetBound();
         shared_ptr<exponential_distribution<> > dist = this->GetDist();
         shared_ptr<default_random_engine> engine = this->GetEngine();
         
         double rndNum = dist->operator()(*engine);
         
-        uint32_t next = (uint32_t)(bound * rndNum);
+        double next = bound * rndNum;
         
         return next;
     }
@@ -63,7 +62,7 @@ namespace Project2
         return *this;
     }
     
-    void ExpRndGen::SetBound(const uint32_t& bound)
+    void ExpRndGen::SetBound(const double& bound)
     {
         this->m_bound = bound;
     }
@@ -75,7 +74,7 @@ namespace Project2
     
     void ExpRndGen::Copy(const ExpRndGen& src)
     {
-        uint32_t bound = src.GetBound();
+        double bound = src.GetBound();
         shared_ptr<exponential_distribution<> > theirDist = src.GetDist();
         
         shared_ptr<exponential_distribution<> > myDist = make_shared<exponential_distribution<> >(*theirDist);

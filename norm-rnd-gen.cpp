@@ -3,7 +3,6 @@
  * Date: April 17, 2016
  */
 
-#include <cstdlib>
 #include <memory>
 #include <random>
 
@@ -14,7 +13,7 @@ using namespace std;
 
 namespace Project2
 {
-    NormRndGen::NormRndGen(const uint32_t& avg, const uint32_t stdDev)
+    NormRndGen::NormRndGen(const double& avg, const double& stdDev)
         : m_dist(0)
     {
         shared_ptr<normal_distribution<> > dist = make_shared<normal_distribution<> >(avg, stdDev);
@@ -33,12 +32,12 @@ namespace Project2
         return this->m_dist;
     }
     
-    uint32_t NormRndGen::Next()
+    double NormRndGen::Next()
     {
         shared_ptr<normal_distribution<> > dist = this->GetDist();
         shared_ptr<default_random_engine> engine = this->GetEngine();
         
-        uint32_t next = (uint32_t)(dist->operator()(*engine));
+        double next = dist->operator()(*engine);
         
         return next;
     }

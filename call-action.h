@@ -21,7 +21,7 @@ namespace Project2
         
         virtual void Invoke() override
         {
-            uint32_t rndNum = generator->Next();
+            double rndNum = generator->Next();
 #ifdef TRACE
             stringstream ss;
             

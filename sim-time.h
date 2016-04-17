@@ -27,7 +27,7 @@ namespace Project2
          * Creates an instance of the SimTime class.
          * @param seconds The number of simulation seconds.
          */
-        SimTime(const uint32_t seconds);
+        SimTime(const double& seconds);
         /**
          * Creates an instance of the SimTime class.
          * @param hours The number of simulation hours.
@@ -46,7 +46,7 @@ namespace Project2
          * Gets the number of simulation seconds.
          * @return The number of simulation seconds.
          */
-        virtual uint32_t GetSeconds() const;
+        virtual double GetSeconds() const;
         /**
          * Indicates whether or not this time is later than the given time.
          * @param other The given time.
@@ -75,7 +75,7 @@ namespace Project2
          * Sets the number of simulation seconds.
          * @param seconds The number of simulation seconds.
          */
-        virtual void SetSeconds(const uint32_t& seconds);
+        virtual void SetSeconds(const double& seconds);
         /**
          * Gets the simulation time put in hours, minutes, and seconds.
          * @param hours The number of simulation hours.

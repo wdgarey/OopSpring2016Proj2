@@ -6,7 +6,6 @@
 #ifndef NORM_RND_GEN_H
 #define NORM_RND_GEN_H
 
-#include <cstdlib>
 #include <memory>
 #include <random>
 
@@ -27,7 +26,7 @@ namespace Project2
          * @param avg The average.
          * @param stdDev The standard deviation.
          */
-        NormRndGen(const uint32_t& avg, const uint32_t stdDev);
+        NormRndGen(const double& avg, const double& stdDev);
         /**
          * The copy constructor of the NormRndGen class.
          * @param src The instance to copy.
@@ -42,7 +41,7 @@ namespace Project2
          * Gets the next number in the normal distribution sequence.
          * @return The next number.
          */
-        virtual uint32_t Next() override;
+        virtual double Next() override;
         /**
          * The assignment operator of the NormRndGen class.
          * @param src The instance being assigned to.
