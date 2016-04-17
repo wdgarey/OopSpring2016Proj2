@@ -9,10 +9,12 @@
 #include <memory>
 #include <sstream>
 
+#include "call.h"
 #include "call-action.h"
 #include "event.h"
 #include "exp-rnd-gen.h"
 #include "norm-rnd-gen.h"
+#include "sim-stats.h"
 #include "sim-time.h"
 #include "simulator.h"
 
@@ -34,19 +36,30 @@ int main()
 #endif
     
     SimTime stopTime;
+    SimStats stats;
+    shared_ptr<Call> call(new Call(1, true));
+    shared_ptr<CallQueued> queuedAct(new CallQueued());
+    shared_ptr<CallServiced> servicedAct(new CallServiced());
+    shared_ptr<CallReleased> releasedAct(new CallReleased());
     
-    shared_ptr<CallAction> act(new CallAction());
+    queuedAct->call = call;
+    servicedAct->call = call;
+    releasedAct->call = call;
     
-    act->generator = make_shared<ExpRndGen>(60, 40);
+    Simulator::Schedule(Event(1, SimTime(5), queuedAct));
+    Simulator::Schedule(Event(2, SimTime(15), servicedAct));
+    Simulator::Schedule(Event(3, SimTime(16), releasedAct));
     
-    for (int count = 0; count < 20; count++)
-    {
-        Event event1(count, SimTime(count), act);
-    
-        Simulator::Schedule(event1);
-    }
-
     Simulator::Run(stopTime);
+    
+    stats.Observe(*call);
+    stats.Observe(*call);
+    
+    stringstream ss;
+    
+    ss << stats;
+    
+    Trace::WriteLineToInst(ss.str());
     
 #ifdef TRACE
     Trace::CloseInst();

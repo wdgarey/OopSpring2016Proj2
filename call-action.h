@@ -11,25 +11,40 @@
 #include "action.h"
 #include "rnd-gen.h"
 #include "trace.h"
+#include "call.h"
 
 namespace Project2
 {
-    class CallAction : public Action
+    class CallQueued : public Action
     {
     public:
-        shared_ptr<RndGen> generator;
+        shared_ptr<Call> call;
         
         virtual void Invoke() override
         {
-            double rndNum = generator->Next();
-#ifdef TRACE
-            stringstream ss;
-            
-            ss << "Generated: " << rndNum;
-            
-            Trace::WriteLineToInst(ss.str());
-#endif
-            
+            call->Queued();
+        }
+    };
+    
+    class CallServiced : public Action
+    {
+    public:
+        shared_ptr<Call> call;
+        
+        virtual void Invoke() override
+        {
+            call->Serviced();
+        }
+    };
+    
+    class CallReleased : public Action
+    {
+    public:
+        shared_ptr<Call> call;
+        
+        virtual void Invoke() override
+        {
+            call->Released();
         }
     };
 }

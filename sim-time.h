@@ -86,7 +86,6 @@ namespace Project2
     private:
         uint32_t m_seconds; /// The number of simulation seconds.
     };
-    
     /**
      * The overloaded output stream operator for the SimTime class.
      * @param out The output stream to write to.
