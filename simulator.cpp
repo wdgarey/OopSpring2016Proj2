@@ -5,8 +5,10 @@
 
 #define TRACE
 
+#include <cstdint>
 #include <functional>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 #ifdef TRACE
@@ -31,7 +33,7 @@ namespace Project2
     
     SimTime Simulator::Now()
     {
-        SimTime now = s_instance.GetCurrEventTime();
+        SimTime now = s_instance.GetCurrTime();
         
         return now;
     }
@@ -48,15 +50,18 @@ namespace Project2
         s_instance.Start();
     }
     
-    void Simulator::Schedule(const Event& event)
+    uint32_t Simulator::Schedule(const SimTime& time, const shared_ptr<Action> action)
     {
-        s_instance.Add(event);
+        uint32_t eventId = s_instance.AddEvent(time, action);
+        
+        return eventId;
     }
     
     Simulator Simulator::s_instance = Simulator();
     
     Simulator::Simulator()
-        : m_running (false),
+        : m_nextEventId(1),
+          m_running (false),
           m_sched (0),
           m_stopTime (SimTime())
     {
@@ -70,8 +75,11 @@ namespace Project2
         this->Copy(src);
     }
     
-    void Simulator::Add(const Event& event)
+    uint32_t Simulator::AddEvent(const SimTime& time, const shared_ptr<Action> action)
     {
+        uint32_t eventId = this->NextEventId();
+        Event event(eventId, time, action);
+        
         shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched = this->GetSched();
         
         sched->push(event);
@@ -79,36 +87,32 @@ namespace Project2
 #ifdef TRACE
         stringstream ss;
         
-        ss << "Event " << event.GetId() << " scheduled for time : " << event.GetTime();
+        ss << "Event " << eventId << " scheduled for time : " << time;
         
         Trace::WriteLineToInst(ss.str());
 #endif
+        
+        return eventId;
     }
     
     void Simulator::Copy(const Simulator& src)
     {
+        uint32_t nextEventId = src.GetNextEventId();
         bool running = src.GetRunning();
         SimTime stopTime = src.GetStopTime();
         shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> theirSched = src.GetSched();
         
         shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> mySched = make_shared<priority_queue<Event,vector<Event>,greater<Event>>>(*theirSched);
         
+        this->SetNextEventId(nextEventId);
         this->SetRunning(running);
         this->SetStopTime(stopTime);
         this->SetSched(mySched);
     }
     
-    SimTime Simulator::GetCurrEventTime() const
+    SimTime Simulator::GetCurrTime() const
     {
-        SimTime currTime;
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched = this->GetSched();
-        
-        if (!sched->empty())
-        {
-            const Event& nextEvent = sched->top();
-        
-            currTime = nextEvent.GetTime();
-        }
+        SimTime currTime = this->GetCurr();
         
         return currTime;
     }
@@ -142,6 +146,40 @@ namespace Project2
         this->SetRunning(false);
     }
     
+    SimTime Simulator::GetCurr() const
+    {
+        return this->m_curr;
+    }
+    
+    uint32_t Simulator::GetNextEventId() const
+    {
+        return this->m_nextEventId;
+    }
+    
+    bool Simulator::GetRunning() const
+    {
+        return this->m_running;
+    }
+    
+    shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> Simulator::GetSched() const
+    {
+        return this->m_sched;
+    }
+    
+    SimTime Simulator::GetStopTime() const
+    {
+        return this->m_stopTime;
+    }
+    
+    uint32_t Simulator::NextEventId()
+    {
+        uint32_t nextId = this->GetNextEventId();
+        
+        this->SetNextEventId(nextId + 1);
+        
+        return nextId;
+    }
+    
     void Simulator::Run()
     {
         shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched = this->GetSched();
@@ -151,15 +189,23 @@ namespace Project2
             if (!sched->empty())
             {
                 SimTime stopTime = this->GetStopTime();
-                SimTime currTime = this->GetCurrEventTime();
+                SimTime currTime = this->GetCurrTime();
 
                 if (stopTime.GetSeconds() == 0 || stopTime > currTime)
                 {
                     Event event = sched->top();
+                    SimTime eventTime = event.GetTime();
+                    
+                    if (currTime > eventTime)
+                    {
+                        throw runtime_error("Missed event!");
+                    }
+                    
+                    this->SetCurr(eventTime);
 #ifdef TRACE
         stringstream ss;
         
-        ss << "Executing event " << event.GetId() << " at " << currTime;
+        ss << "Executing event " << event.GetId() << " at " << eventTime;
         
         Trace::WriteLineToInst(ss.str());
 #endif                    
@@ -185,9 +231,14 @@ namespace Project2
         }
     }
     
-    bool Simulator::GetRunning() const
+    void Simulator::SetCurr(const SimTime& time)
     {
-        return this->m_running;
+        this->m_curr = time;
+    }
+    
+    void Simulator::SetNextEventId(const uint32_t& nextId)
+    {
+        this->m_nextEventId = nextId;
     }
     
     void Simulator::SetRunning(const bool& running)
@@ -195,19 +246,9 @@ namespace Project2
         this->m_running = running;
     }
     
-    shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> Simulator::GetSched() const
-    {
-        return this->m_sched;
-    }
-    
     void Simulator::SetSched(const shared_ptr<priority_queue<Event,vector<Event>,greater<Event> > >& sched)
     {
         this->m_sched = sched;
-    }
-    
-    SimTime Simulator::GetStopTime() const
-    {
-        return this->m_stopTime;
     }
     
     void Simulator::SetStopTime(const SimTime& stopTime)

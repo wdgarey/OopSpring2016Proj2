@@ -9,12 +9,25 @@
 #include <sstream>
 
 #include "action.h"
+#include "call-taker.h"
 #include "rnd-gen.h"
+#include "sim-stats.h"
 #include "trace.h"
 #include "call.h"
 
 namespace Project2
 {
+    class Taker : public CallTaker
+    {
+    public:
+        shared_ptr<SimStats> stats;
+        
+        virtual void TakeCall(const Call& call) override
+        {
+            stats->Observe(call);
+        }
+        
+    };
     class CallQueued : public Action
     {
     public:

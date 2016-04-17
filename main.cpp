@@ -10,7 +10,8 @@
 #include <sstream>
 
 #include "call.h"
-#include "call-action.h"
+#include "call-producer.h"
+#include "delete-me.h"
 #include "event.h"
 #include "exp-rnd-gen.h"
 #include "norm-rnd-gen.h"
@@ -35,29 +36,20 @@ int main()
     Trace::OpenInst("trace.txt");
 #endif
     
-    SimTime stopTime;
-    SimStats stats;
-    shared_ptr<Call> call(new Call(1, true));
-    shared_ptr<CallQueued> queuedAct(new CallQueued());
-    shared_ptr<CallServiced> servicedAct(new CallServiced());
-    shared_ptr<CallReleased> releasedAct(new CallReleased());
+    shared_ptr<Taker> taker = make_shared<Taker>();
+    taker->stats = make_shared<SimStats>();
     
-    queuedAct->call = call;
-    servicedAct->call = call;
-    releasedAct->call = call;
+    shared_ptr<ExpRndGen> rnd = make_shared<ExpRndGen>(60, 25);
     
-    Simulator::Schedule(Event(1, SimTime(5), queuedAct));
-    Simulator::Schedule(Event(2, SimTime(15), servicedAct));
-    Simulator::Schedule(Event(3, SimTime(16), releasedAct));
+    CallProducer producer(rnd, taker);
     
-    Simulator::Run(stopTime);
+    producer.Start(SimTime(5), SimTime(60));
     
-    stats.Observe(*call);
-    stats.Observe(*call);
+    Simulator::Run(SimTime());
     
     stringstream ss;
     
-    ss << stats;
+    ss << *(taker->stats);
     
     Trace::WriteLineToInst(ss.str());
     
