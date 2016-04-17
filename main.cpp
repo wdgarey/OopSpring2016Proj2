@@ -11,6 +11,8 @@
 
 #include "call-action.h"
 #include "event.h"
+#include "exp-rnd-gen.h"
+#include "norm-rnd-gen.h"
 #include "sim-time.h"
 #include "simulator.h"
 
@@ -33,12 +35,17 @@ int main()
     
     SimTime stopTime;
     
-    shared_ptr<Action> act(new CallAction());
+    shared_ptr<CallAction> act(new CallAction());
     
-    Event event(1, SimTime(10), act);
+    act->generator = make_shared<NormRndGen>(6, 2);
     
-    Simulator::Schedule(event);
+    for (int count = 0; count < 20; count++)
+    {
+        Event event1(count, SimTime(count), act);
     
+        Simulator::Schedule(event1);
+    }
+
     Simulator::Run(stopTime);
     
 #ifdef TRACE

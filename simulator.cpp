@@ -91,7 +91,7 @@ namespace Project2
         SimTime stopTime = src.GetStopTime();
         shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> theirSched = src.GetSched();
         
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> mySched(new priority_queue<Event,vector<Event>,greater<Event> >(*theirSched));
+        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> mySched = make_shared<priority_queue<Event,vector<Event>,greater<Event>>>(*theirSched);
         
         this->SetRunning(running);
         this->SetStopTime(stopTime);
@@ -124,10 +124,6 @@ namespace Project2
     {
         if (this != &src)
         {
-            shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched = this->GetSched();
-            
-            sched.reset();
-            
             this->Copy(src);
         }
         

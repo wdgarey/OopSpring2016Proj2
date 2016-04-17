@@ -61,11 +61,6 @@ namespace Project2
          */
         virtual void Add(const Event& event);
         /**
-         * Deep copies the given simulator.
-         * @param src The instance to copy.
-         */
-        virtual void Copy(const Simulator& src);
-        /**
          * Gets the time of the event that will be executed next.
          * @return The simulation time.
          */
@@ -90,6 +85,11 @@ namespace Project2
          */
         virtual void Stop();
     protected:
+        /**
+         * Deep copies the given simulator.
+         * @param src The instance to copy.
+         */
+        virtual void Copy(const Simulator& src);
         /**
          * Advances the simulation by one discrete-event.
          */

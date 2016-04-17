@@ -3,19 +3,33 @@
  * Date: April 17, 2016
  */
 
+#define TRACE
+
+#include <memory>
+#include <sstream>
+
 #include "action.h"
-#include "call.h"
+#include "rnd-gen.h"
+#include "trace.h"
 
 namespace Project2
 {
     class CallAction : public Action
     {
     public:
-        Call call;
+        shared_ptr<RndGen> generator;
         
         virtual void Invoke() override
         {
-            call.Queued();
+            uint32_t rndNum = generator->Next();
+#ifdef TRACE
+            stringstream ss;
+            
+            ss << "Generated: " << rndNum;
+            
+            Trace::WriteLineToInst(ss.str());
+#endif
+            
         }
     };
 }
