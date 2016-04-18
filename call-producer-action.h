@@ -35,7 +35,7 @@ namespace Project2
          * @param inst The instance to invoke the action for.
          * @param actName The name of the action to invoke. 
          */
-        CallProducerAction(CallProducer& inst, const Name& actName);
+        CallProducerAction(CallProducer* inst, const Name& actName);
         /**
          * Gets the name of the action to invoke.
          * @return The name.

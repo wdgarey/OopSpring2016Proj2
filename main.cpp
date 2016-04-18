@@ -15,7 +15,7 @@
 #include "event.h"
 #include "exp-rnd-gen.h"
 #include "norm-rnd-gen.h"
-#include "sim-stats.h"
+#include "system-stats.h"
 #include "sim-time.h"
 #include "simulator.h"
 
@@ -36,20 +36,9 @@ int main()
     Trace::OpenInst("trace.txt");
 #endif
     
-    shared_ptr<Taker> taker = make_shared<Taker>();
-    taker->stats = make_shared<SimStats>();
-    
-    shared_ptr<ExpRndGen> rnd = make_shared<ExpRndGen>(60, 25);
-    
-    CallProducer producer(rnd, taker);
-    
-    producer.Start(SimTime(5), SimTime(60));
-    
-    Simulator::Run(SimTime());
+   
     
     stringstream ss;
-    
-    ss << *(taker->stats);
     
     Trace::WriteLineToInst(ss.str());
     

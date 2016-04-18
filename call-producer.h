@@ -12,17 +12,17 @@
 #include "call.h"
 #include "call-taker.h"
 #include "sim-time.h"
-#include "rnd-gen.h"
+#include "exp-rnd-gen.h"
 
 namespace Project2
 {
     /**
-     * A class used to produce calls.
+     * A class used to produce calls and given them to the call taker.
      */
     class CallProducer
     {
         /**
-         * A class used to produce calls and give them to a call taker.
+         * A class used to execute scheduled CallProducer actions.
          */
         friend class CallProducerAction;
     public:
@@ -35,12 +35,17 @@ namespace Project2
          * @param rnd The random number generator to use.
          * @param taker The object responsible for taking the calls.
          */
-        CallProducer(const shared_ptr<RndGen> rnd, const shared_ptr<CallTaker> taker);
+        CallProducer(const shared_ptr<ExpRndGen> rnd, const shared_ptr<CallTaker> taker);
+        /**
+         * The copy constructor of the call producer class.
+         * @param src The instance to copy.
+         */
+        CallProducer(const CallProducer& src);
         /**
          * Gets the random generator used to schedule when calls are produced.
          * @return The random generator.
          */
-        virtual shared_ptr<RndGen> GetRnd() const;
+        virtual shared_ptr<ExpRndGen> GetRnd() const;
         /**
          * Gets the object responsible for taking the producer's calls.
          * @return The object responsible for taking the calls.
@@ -48,7 +53,7 @@ namespace Project2
         virtual shared_ptr<CallTaker> GetTaker() const;
         /**
          * Indicates whether or not a random number generator has been given.
-         * @return True, if a random number generator has been givem.
+         * @return True, if a random number generator has been given.
          */
         virtual bool HasRnd() const;
         /**
@@ -62,10 +67,16 @@ namespace Project2
          */
         virtual bool IsProducing() const;
         /**
+         * The assignment operator of the CallProducer class.
+         * @param src The instance being assigned to.
+         * @return The instance that was assigned.
+         */
+        virtual CallProducer& operator =(const CallProducer& src);
+        /**
          * Sets the random generator used to schedule when calls are produced.
          * @param rnd The random generator.
          */
-        virtual void SetRnd(const shared_ptr<RndGen> rnd);
+        virtual void SetRnd(const shared_ptr<ExpRndGen> rnd);
         /**
          * Sets the object responsible for taking the producer's calls.
          * @param taker The object responsible for taking calls.
@@ -82,6 +93,11 @@ namespace Project2
          */
         virtual void Stop();
     protected:
+        /**
+         * Deep copies the given instance.
+         * @param src The instance to copy.
+         */
+        virtual void Copy(const CallProducer& src);
         /**
          * Gets the ID that will be assigned to the next call that is produced.
          * @return The ID.
@@ -138,7 +154,7 @@ namespace Project2
     private:
         uint32_t m_nextSeq; /// The ID that will be assigned to the next call that is produced.
         bool m_producing; /// A flag that indicates if the producer is producing calls.
-        shared_ptr<RndGen> m_rnd; /// The random generator to use to schedule when to produce calls.
+        shared_ptr<ExpRndGen> m_rnd; /// The random generator to use to schedule when to produce calls.
         SimTime m_start; /// The time at which to stop producing calls.
         SimTime m_stop; /// The time at which to start producing calls.
         shared_ptr<CallTaker> m_taker; /// The object responsible for taking calls.

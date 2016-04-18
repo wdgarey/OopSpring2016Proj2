@@ -5,40 +5,40 @@
 
 #include "call.h"
 #include "sim-time.h"
-#include "sim-stats.h"
+#include "system-stats.h"
 #include "statistics.h"
 
 namespace Project2
 {
-    SimStats::SimStats()
+    SystemStats::SystemStats()
         : m_queued(SimTimeStatistics()),
           m_served(SimTimeStatistics()),
           m_system(SimTimeStatistics())
     { }
     
-    SimTimeStatistics SimStats::GetQueued() const
+    SimTimeStatistics SystemStats::GetQueued() const
     {
         return this->m_queued;
     }
     
-    SimTimeStatistics SimStats::GetServed() const
+    SimTimeStatistics SystemStats::GetServed() const
     {
         return this->m_served;
     }
     
-    SimTimeStatistics SimStats::GetSystem() const
+    SimTimeStatistics SystemStats::GetSystem() const
     {
         return this->m_system;
     }
     
-    double SimStats::GetTotalCalls() const
+    double SystemStats::GetTotalCalls() const
     {
         SimTimeStatistics queued = this->GetQueued();
         
         return queued.GetCount();
     }
     
-    void SimStats::Observe(const Call& call)
+    void SystemStats::Observe(const Call& call)
     {
         SimTimeStatistics queued = this->GetQueued();
         SimTimeStatistics served = this->GetServed();
@@ -57,22 +57,22 @@ namespace Project2
         this->SetSystem(system);
     }
     
-    void SimStats::SetQueued(const SimTimeStatistics& queued)
+    void SystemStats::SetQueued(const SimTimeStatistics& queued)
     {
         this->m_queued = queued;
     }
     
-    void SimStats::SetServed(const SimTimeStatistics& served)
+    void SystemStats::SetServed(const SimTimeStatistics& served)
     {
         this->m_served = served;
     }
     
-    void SimStats::SetSystem(const SimTimeStatistics& system)
+    void SystemStats::SetSystem(const SimTimeStatistics& system)
     {
         this->m_system = system;
     }
     
-    ostream& operator <<(ostream& out, const SimStats& stats)
+    ostream& operator <<(ostream& out, const SystemStats& stats)
     {
         double calls = stats.GetTotalCalls();
         SimTimeStatistics queued = stats.GetQueued();

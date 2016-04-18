@@ -15,11 +15,9 @@ namespace Project2
           m_inst(0)
     { }
         
-    CallProducerAction::CallProducerAction(CallProducer& inst, const Name& actName)
+    CallProducerAction::CallProducerAction(CallProducer* inst, const Name& actName)
     {
-        CallProducer* instPtr = &inst;
-        
-        this->SetInst(instPtr);
+        this->SetInst(inst);
         this->SetActName(actName);
     }
     

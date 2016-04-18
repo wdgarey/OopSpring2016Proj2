@@ -11,7 +11,6 @@
 #include "call-taker.h"
 #include "call.h"
 #include "exp-rnd-gen.h"
-#include "rnd-gen.h"
 #include "sim-time.h"
 #include "simulator.h"
 
@@ -26,7 +25,7 @@ namespace Project2
           m_taker(0)
     { }
     
-    CallProducer::CallProducer(const shared_ptr<RndGen> rnd, const shared_ptr<CallTaker> taker)
+    CallProducer::CallProducer(const shared_ptr<ExpRndGen> rnd, const shared_ptr<CallTaker> taker)
         : m_nextSeq(1),
           m_producing(false),
           m_start(SimTime()),
@@ -36,7 +35,12 @@ namespace Project2
         this->SetTaker(taker);
     }
     
-    shared_ptr<RndGen> CallProducer::GetRnd() const
+    CallProducer::CallProducer(const CallProducer& src)
+    {
+        this->Copy(src);
+    }
+    
+    shared_ptr<ExpRndGen> CallProducer::GetRnd() const
     {
         return this->m_rnd;
     }
@@ -48,7 +52,7 @@ namespace Project2
     
     bool CallProducer::HasRnd() const
     {
-        shared_ptr<RndGen> rnd = this->GetRnd();
+        shared_ptr<ExpRndGen> rnd = this->GetRnd();
         
         bool hasRnd = (rnd != 0);
         
@@ -70,8 +74,18 @@ namespace Project2
         
         return isProducing;
     }
+    
+    CallProducer& CallProducer::operator =(const CallProducer& src)
+    {
+        if (this != &src)
+        {
+            this->Copy(src);
+        }
+        
+        return *this;
+    }
 
-    void CallProducer::SetRnd(const shared_ptr<RndGen> rnd)
+    void CallProducer::SetRnd(const shared_ptr<ExpRndGen> rnd)
     {
         this->m_rnd = rnd;
     }
@@ -100,6 +114,25 @@ namespace Project2
         {
             this->SetProducing(false);
         }
+    }
+    
+    void CallProducer::Copy(const CallProducer& src)
+    {
+        uint32_t nextSeq = src.GetNextSeq();
+        bool producing = src.GetProducing();
+        shared_ptr<ExpRndGen> theirRnd = src.GetRnd();
+        SimTime start = src.GetStart();
+        SimTime stop = src.GetStop();
+        shared_ptr<CallTaker> taker = src.GetTaker();
+        
+        shared_ptr<ExpRndGen> myRnd = make_shared<ExpRndGen>(*theirRnd);
+        
+        this->SetNextSeq(nextSeq);
+        this->SetProducing(producing);
+        this->SetRnd(myRnd);
+        this->SetStart(start);
+        this->SetStop(stop);
+        this->SetTaker(taker);
     }
     
     uint32_t CallProducer::GetNextSeq() const
@@ -162,7 +195,7 @@ namespace Project2
         else
         {
             SimTime nextTime;
-            shared_ptr<Action> action = make_shared<CallProducerAction>(*this, CallProducerAction::Name::Produce);
+            shared_ptr<Action> action = make_shared<CallProducerAction>(this, CallProducerAction::Name::Produce);
             SimTime start = this->GetStart();
             
             if (start > curr)
@@ -171,7 +204,7 @@ namespace Project2
             }
             else if (this->HasRnd())
             {
-                shared_ptr<RndGen> rnd = this->GetRnd();
+                shared_ptr<ExpRndGen> rnd = this->GetRnd();
                 
                 double step = rnd->Next();
                 

@@ -3,8 +3,8 @@
  * Date: April 17, 2016
  */
 
-#ifndef SIM_STATS_H
-#define SIM_STATS_H
+#ifndef SYSTEM_STATS_H
+#define SYSTEM_STATS_H
 
 #include <cstdint>
 #include <iostream>
@@ -17,15 +17,15 @@ using namespace std;
 namespace Project2
 {
     /**
-     * A class used to store and compute simulation statistics.
+     * A class used to store and compute system statistics.
      */
-    class SimStats
+    class SystemStats
     {
     public:
         /**
-         * Creates an instance of the SimStats class.
+         * Creates an instance of the SystemStats class.
          */
-        SimStats();
+        SystemStats();
         /**
          * Gets the queued statistics.
          * @return The queued statistics.
@@ -78,7 +78,7 @@ namespace Project2
      * @param stats
      * @return 
      */
-    ostream& operator <<(ostream& out, const SimStats& stats);
+    ostream& operator <<(ostream& out, const SystemStats& stats);
 }
 
 #endif
