@@ -20,7 +20,7 @@ namespace Project2
          * Takes a call.
          * @param call The call to take.
          */
-        virtual void TakeCall(const Call& call) = 0;
+        virtual void TakeCall(Call& call) = 0;
     };
 }
 

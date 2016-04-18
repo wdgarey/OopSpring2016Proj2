@@ -44,6 +44,26 @@ namespace Project2
          */
         virtual SimTime ComputeTimeInSystem() const;
         /**
+         * Gets the ID of the call.
+         * @return The ID.
+         */
+        virtual uint32_t GetId() const;
+        /**
+         * Gets the time at which the call was placed in the system's queue.
+         * @return The simulation time.
+         */
+        virtual SimTime GetQueued() const;
+        /**
+         * Gets the time that indicates when the call left the system.
+         * @return The simulation time.
+         */
+        virtual SimTime GetReleased() const;
+        /**
+         * Gets the time at which the call began to get service.
+         * @return The simulation time.
+         */
+        virtual SimTime GetServed() const;
+        /**
          * Indicates whether or not this call has priority over the given call.
          * @param other The other caller.
          * @return True, if this call has priority over the given call.
@@ -73,41 +93,22 @@ namespace Project2
          */
         virtual void Serviced();
     protected:
-        /**
-         * Gets the ID of the call.
-         * @return The ID.
-         */
-        virtual uint32_t GetId() const;
+
         /**
          * Sets the ID of the call.
          * @param id The ID.
          */
         virtual void SetId(const uint32_t& id);
         /**
-         * Gets the time at which the call was placed in the system's queue.
-         * @return The simulation time.
-         */
-        virtual SimTime GetQueued() const;
-        /**
          * Sets the time at which the call was placed in the system's queue.
          * @param time The simulation time.
          */
         virtual void SetQueued(const SimTime& time);
         /**
-         * Gets the time that indicates when the call left the system.
-         * @return The simulation time.
-         */
-        virtual SimTime GetReleased() const;
-        /**
          * Sets the time that indicates when the call left the system.
          * @param time The simulation time.
          */
         virtual void SetReleased(const SimTime& time);
-        /**
-         * Gets the time at which the call began to get service.
-         * @return The simulation time.
-         */
-        virtual SimTime GetServed() const;
         /**
          * Sets the time at which the call began to get service.
          * @param time The simulation time.

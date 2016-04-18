@@ -92,6 +92,8 @@ namespace Project2
             
             call = Call(calls->top());
             
+            calls->pop();
+            
             taken = true;
         }
         

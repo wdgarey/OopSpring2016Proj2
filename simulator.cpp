@@ -136,6 +136,13 @@ namespace Project2
     
     void Simulator::Start()
     {
+#ifdef TRACE
+        stringstream ss;
+        
+        ss << "Starting simulator" << "" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         this->SetRunning(true);
         
         this->Run();
@@ -143,6 +150,13 @@ namespace Project2
     
     void Simulator::Stop()
     {
+#ifdef TRACE
+        stringstream ss;
+        
+        ss << "Stopping simulator" << "" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         this->SetRunning(false);
     }
     

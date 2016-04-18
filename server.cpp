@@ -3,6 +3,8 @@
  * Date: April 17, 2016
  */
 
+#define TRACE
+
 #include <cstdint>
 #include <memory>
 
@@ -13,6 +15,14 @@
 #include "system.h"
 #include "server.h"
 #include "server-action.h"
+
+#ifdef TRACE
+#include <sstream>
+
+#include "trace.h"
+#endif
+
+using namespace std;
 
 namespace Project2
 {
@@ -96,9 +106,39 @@ namespace Project2
     
     void Server::ReceiveCallReadyNotification()
     {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " received call ready notification" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         if (!this->IsBusy())
         {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " is not busy" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
             this->ServiceNextCall();
+        }
+        else
+        {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " is busy" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         }
     }
     
@@ -127,15 +167,45 @@ namespace Project2
     {
         if (this->IsBusy())
         {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " sending call processed notification" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
             System* owner = this->GetOwner();
             shared_ptr<Call> currCall = this->GetCurrCall();
             
             owner->ReceiveCallProcessedNotification(*currCall);
         }
+        else
+        {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "***Server " << id << " could not send notification because it is not busy***" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
+        }
     }
     
     void Server::ReleaseCall()
     {
+    #ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " releasing call" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         this->SetCurrCall(0);
     }
     
@@ -144,11 +214,41 @@ namespace Project2
         Call call;
         bool newCall = false;
         System* owner = this->GetOwner();
+#ifdef TRACE
+        uint32_t id = this->GetId();
         
+        stringstream ss;
         
+        ss << "Server " << id << " requesting another call" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif        
         if (owner->TryGiveCallForProcessing(call))
         {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " has received another call" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
             this->SetCurrCall(make_shared<Call>(call));
+            
+            newCall = true;
+        }
+        else
+        {
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "No calls available" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         }
         
         return newCall;
@@ -170,6 +270,16 @@ namespace Project2
         }
         
         SimTime nextTime = curr + increase;
+#ifdef TRACE
+        uint32_t id = this->GetId();
+        
+        stringstream ss;
+        
+        ss << "Server " << id << " scheduling next service time for " << nextTime << ".";
+        ss << " " << increase << " from current time" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         
         Simulator::Schedule(nextTime, action);
     }

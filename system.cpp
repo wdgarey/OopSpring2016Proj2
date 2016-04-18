@@ -3,6 +3,8 @@
  * Date: April 17, 2016
  */
 
+#define TRACE
+
 #include <memory>
 #include <vector>
 
@@ -12,6 +14,14 @@
 #include "system-stats.h"
 #include "system.h"
 #include "server.h"
+
+#ifdef TRACE
+#include <sstream>
+
+#include "trace.h"
+#endif
+
+using namespace std;
 
 namespace Project2
 {
@@ -49,19 +59,39 @@ namespace Project2
         return *this;
     }
     
-    void System::TakeCall(const Call& call)
+    void System::TakeCall(Call& call)
     {
         shared_ptr<CallQueue> calls = this->GetCalls();
+#ifdef TRACE
+        uint32_t id = call.GetId();
         
+        stringstream ss;
+        
+        ss << "System taking call" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
+        call.Queued();
+            
         if (calls->TryAdd(call))
         {
             this->SendCallReadyNotification();
         }
     }
     
-    void System::ReceiveCallProcessedNotification(const Call& call)
+    void System::ReceiveCallProcessedNotification(Call& call)
     {
         SystemStats stats = this->GetStats();
+#ifdef TRACE
+        uint32_t id = call.GetId();
+        
+        stringstream ss;
+        
+        ss << "System releasing call " << id << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
+        call.Released();
         
         stats.Observe(call);
         
@@ -71,8 +101,40 @@ namespace Project2
     bool System::TryGiveCallForProcessing(Call& call)
     {
         shared_ptr<CallQueue> calls = this->GetCalls();
+#ifdef TRACE
+        stringstream ss;
         
+        ss << "System trying to retrieve call for processing" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         bool success = calls->TryTake(call);
+        
+        if (success)
+        {
+#ifdef TRACE
+        uint32_t id = call.GetId();
+        
+        stringstream ss;
+        
+        ss << "Call " << id << " retrieved" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
+            call.Serviced();
+        }
+        else
+        {
+#ifdef TRACE
+        uint32_t id = call.GetId();
+        
+        stringstream ss;
+        
+        ss << "Could not retrieve call" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
+        }
         
         return success;
     }
@@ -104,7 +166,13 @@ namespace Project2
     void System::SendCallReadyNotification()
     {
         shared_ptr<vector<shared_ptr<Server>>> servers = this->GetServers();
+#ifdef TRACE
+        stringstream ss;
         
+        ss << "System sending call ready notifications" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         for (int idx = 0; idx < servers->size(); idx++)
         {
             shared_ptr<Server> server = (*servers)[idx];

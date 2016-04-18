@@ -56,12 +56,12 @@ namespace Project2
          * Takes a call.
          * @param call The call to process.
          */
-        virtual void TakeCall(const Call& call) override;
+        virtual void TakeCall(Call& call) override;
         /**
          * Receives a notification that a call has been processed.
          * @param call The call that has been completely processed.
          */
-        virtual void ReceiveCallProcessedNotification(const Call& call);
+        virtual void ReceiveCallProcessedNotification(Call& call);
         /**
          * Tries to get a call from the queue for processing.
          * @param call The call, if available, to process.

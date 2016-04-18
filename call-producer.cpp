@@ -3,6 +3,8 @@
  * Date: April 17, 2016
  */
 
+#define TRACE
+
 #include <cstdint>
 #include <memory>
 
@@ -13,6 +15,11 @@
 #include "exp-rnd-gen.h"
 #include "sim-time.h"
 #include "simulator.h"
+
+#ifdef TRACE
+#include <sstream>
+#include "trace.h"
+#endif 
 
 namespace Project2
 {
@@ -99,6 +106,13 @@ namespace Project2
     {
         if (!this->IsProducing())
         {
+#ifdef TRACE
+        stringstream ss;
+        
+        ss << "Call producer " << "starting to produce calls" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
             this->SetProducing(true);
         
             this->SetStart(start);
@@ -112,6 +126,13 @@ namespace Project2
     {
         if (this->IsProducing())
         {
+#ifdef TRACE
+        stringstream ss;
+        
+        ss << "Call producer " << "stopping" << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
             this->SetProducing(false);
         }
     }
@@ -168,14 +189,16 @@ namespace Project2
     {
         if (this->HasTaker())
         {
-            uint32_t id = this->GetNextSeq();
+            uint32_t id = this->NextSeq();
             shared_ptr<CallTaker> taker = this->GetTaker();
-            
+#ifdef TRACE
+        stringstream ss;
+        
+        ss << "Call producer " << "producing call " << id << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
             Call call(id, true);
-            
-            call.Queued();
-            call.Serviced();
-            call.Released();
             
             taker->TakeCall(call);
         }
@@ -216,6 +239,13 @@ namespace Project2
             }
             
             Simulator::Schedule(nextTime, action);
+#ifdef TRACE
+        stringstream ss;
+        
+        ss << "Call producer " << "next production at " << nextTime << ".";
+        
+        Trace::WriteLineToInst(ss.str());
+#endif
         }
     }
     
