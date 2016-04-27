@@ -49,7 +49,7 @@ namespace Project2
          * Sets the engine to use when generating numbers.
          * @param engine The engine.
          */
-        virtual void SetEngine(const shared_ptr<default_random_engine> engine);
+        virtual void SetEngine(const shared_ptr<default_random_engine>& engine);
     protected:
         /**
          * Deep copies the given instance.

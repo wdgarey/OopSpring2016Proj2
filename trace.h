@@ -87,7 +87,7 @@ namespace Project2
          * Sets the output file stream.
          * @param stream The output file stream.
          */
-        virtual void SetStream (const shared_ptr<ofstream> stream);
+        virtual void SetStream (const shared_ptr<ofstream>& stream);
     private:
         shared_ptr<ofstream> m_stream; /// The stream to write to.
         /**

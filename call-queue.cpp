@@ -116,7 +116,7 @@ namespace Project2
         return this->m_calls;
     }
     
-    void CallQueue::SetCalls(const shared_ptr<priority_queue<Call> > calls)
+    void CallQueue::SetCalls(const shared_ptr<priority_queue<Call> >& calls)
     {
         this->m_calls = calls;
     }

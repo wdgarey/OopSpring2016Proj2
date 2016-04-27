@@ -23,10 +23,6 @@ namespace Project2
      */
     class CallProducer : public enable_shared_from_this<CallProducer>
     {
-        /**
-         * A class used to execute scheduled CallProducer actions.
-         */
-        friend class CallProducerAction;
     public:
         /**
          * Creates an instance of the CallProducer class.
@@ -37,7 +33,7 @@ namespace Project2
          * @param rnd The random number generator to use.
          * @param taker The object responsible for taking the calls.
          */
-        CallProducer(const shared_ptr<ExpRndGen> rnd, const shared_ptr<CallTaker> taker);
+        CallProducer(const shared_ptr<ExpRndGen>& rnd, const shared_ptr<CallTaker>& taker);
         /**
          * The copy constructor of the call producer class.
          * @param src The instance to copy.
@@ -78,12 +74,12 @@ namespace Project2
          * Sets the random generator used to schedule when calls are produced.
          * @param rnd The random generator.
          */
-        virtual void SetRnd(const shared_ptr<ExpRndGen> rnd);
+        virtual void SetRnd(const shared_ptr<ExpRndGen>& rnd);
         /**
          * Sets the object responsible for taking the producer's calls.
          * @param taker The object responsible for taking calls.
          */
-        virtual void SetTaker(const shared_ptr<CallTaker> taker);
+        virtual void SetTaker(const shared_ptr<CallTaker>& taker);
         /**
          * Starts producing calls.
          * @param start The time at which to start producing calls.

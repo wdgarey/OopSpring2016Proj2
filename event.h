@@ -30,7 +30,7 @@ namespace Project2
          * @param time The time at which the action should be invoked.
          * @param action The action to invoke.
          */
-        Event(const uint32_t& id, const SimTime& time, const shared_ptr<Action> action);
+        Event(const uint32_t& id, const SimTime& time, const shared_ptr<Action>& action);
         /**
          * Invokes the action.
          */
@@ -67,7 +67,7 @@ namespace Project2
          * Sets the action that should be invoked.
          * @param action The action.
          */
-        virtual void SetAction(const shared_ptr<Action> action);
+        virtual void SetAction(const shared_ptr<Action>& action);
         /**
          * Sets the ID of the event.
          * @param id The ID.

@@ -40,7 +40,7 @@ namespace Project2
          * Adds a server to process calls.
          * @param server The server to add.
          */
-        virtual void AddServer(const shared_ptr<Server> server);
+        virtual void AddServer(const shared_ptr<Server>& server);
         /**
          * Gets the system statistics.
          * @return The statistics.
@@ -92,12 +92,12 @@ namespace Project2
          * Sets the collection of calls that need to be processed.
          * @param calls The collection of calls.
          */
-        virtual void SetCalls(const shared_ptr<CallQueue> calls);
+        virtual void SetCalls(const shared_ptr<CallQueue>& calls);
         /**
          * Sets the collection of servers that process calls.
          * @param servers The collection of servers.
          */
-        virtual void SetServers(const shared_ptr<vector<shared_ptr<Server>>> servers);
+        virtual void SetServers(const shared_ptr<vector<shared_ptr<Server>>>& servers);
         /**
          * Sets the system statistics.
          * @param stats The statistics.

@@ -83,7 +83,7 @@ namespace Project2
          * Sets the collection of queued calls.
          * @param calls THe collection.
          */
-        virtual void SetCalls(const shared_ptr<priority_queue<Call> > calls);
+        virtual void SetCalls(const shared_ptr<priority_queue<Call> >& calls);
     private:
         uint32_t m_capacity; /// The maximum number of calls that can be queued.
         shared_ptr<priority_queue<Call> > m_calls; /// The queued calls.

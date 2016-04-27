@@ -50,7 +50,7 @@ namespace Project2
         s_instance.Start();
     }
     
-    uint32_t Simulator::Schedule(const SimTime& time, const shared_ptr<Action> action)
+    uint32_t Simulator::Schedule(const SimTime& time, const shared_ptr<Action>& action)
     {
         uint32_t eventId = s_instance.AddEvent(time, action);
         
@@ -75,7 +75,7 @@ namespace Project2
         this->Copy(src);
     }
     
-    uint32_t Simulator::AddEvent(const SimTime& time, const shared_ptr<Action> action)
+    uint32_t Simulator::AddEvent(const SimTime& time, const shared_ptr<Action>& action)
     {
         uint32_t eventId = this->NextEventId();
         Event event(eventId, time, action);
@@ -260,7 +260,7 @@ namespace Project2
         this->m_running = running;
     }
     
-    void Simulator::SetSched(const shared_ptr<priority_queue<Event,vector<Event>,greater<Event> > >& sched)
+    void Simulator::SetSched(const shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>>& sched)
     {
         this->m_sched = sched;
     }

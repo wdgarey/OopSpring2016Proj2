@@ -21,10 +21,6 @@ namespace Project2
      */
     class Server : public enable_shared_from_this<Server>
     {
-        /**
-         * A class used to execute scheduled server actions.
-         */
-        friend class ServerAction;
     public:
         /**
          * Creates an instance of the Server class.
@@ -36,7 +32,7 @@ namespace Project2
          * @param owner The owner of the server.
          * @param rnd The random number generator to use to determine service times.
          */
-        Server(const uint32_t& id, System* owner, shared_ptr<NormRndGen> rnd);
+        Server(const uint32_t& id, const weak_ptr<System>& owner, const shared_ptr<NormRndGen>& rnd);
         /**
          * The copy constructor of the server class.
          * @param src The instance to copy. 
@@ -51,7 +47,7 @@ namespace Project2
          * Gets the owner of this server.
          * @return The owner.
          */
-        virtual System* GetOwner() const;
+        virtual weak_ptr<System> GetOwner() const;
         /**
          * Gets the random number generator used to determine service times.
          * @return The random number generator.
@@ -74,6 +70,10 @@ namespace Project2
          */
         virtual Server& operator =(const Server& src);
         /**
+         * Notifies the server that a call is available.
+         */
+        virtual void ReceiveCallReadyNotification();
+        /**
          * Sets the ID of the server.
          * @param id The ID.
          */
@@ -82,16 +82,12 @@ namespace Project2
          * Sets the owner of this server.
          * @param owner The owner.
          */
-        virtual void SetOwner(System* owner);
+        virtual void SetOwner(const weak_ptr<System>& owner);
         /**
          * Sets the random number generator used to determine service times.
          * @param rnd The random number generator.
          */
-        virtual void SetRnd(const shared_ptr<NormRndGen> rnd);
-        /**
-         * Notifies the server that a call is available.
-         */
-        virtual void ReceiveCallReadyNotification();
+        virtual void SetRnd(const shared_ptr<NormRndGen>& rnd);
     protected:
         /**
          * Deep copies the given server.
@@ -128,11 +124,11 @@ namespace Project2
          * Sets the current call being serviced.
          * @param The current call.
          */
-        virtual void SetCurrCall(const shared_ptr<Call>);
+        virtual void SetCurrCall(const shared_ptr<Call>&);
     private:
         shared_ptr<Call> m_currCall; /// The call that is currently being serviced.
         uint32_t m_id; /// The ID of the tech support rep.
-        System* m_owner; /// The owner of the server.
+        weak_ptr<System> m_owner; /// The owner of the server.
         shared_ptr<NormRndGen> m_rnd; /// The random number generator used to determine service times.
     };
 }

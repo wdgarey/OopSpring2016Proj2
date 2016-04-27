@@ -32,7 +32,7 @@ namespace Project2
           m_taker(0)
     { }
     
-    CallProducer::CallProducer(const shared_ptr<ExpRndGen> rnd, const shared_ptr<CallTaker> taker)
+    CallProducer::CallProducer(const shared_ptr<ExpRndGen>& rnd, const shared_ptr<CallTaker>& taker)
         : m_nextSeq(1),
           m_producing(false),
           m_start(SimTime()),
@@ -92,12 +92,12 @@ namespace Project2
         return *this;
     }
 
-    void CallProducer::SetRnd(const shared_ptr<ExpRndGen> rnd)
+    void CallProducer::SetRnd(const shared_ptr<ExpRndGen>& rnd)
     {
         this->m_rnd = rnd;
     }
     
-    void CallProducer::SetTaker(const shared_ptr<CallTaker> taker)
+    void CallProducer::SetTaker(const shared_ptr<CallTaker>& taker)
     {
         this->m_taker = taker;
     }

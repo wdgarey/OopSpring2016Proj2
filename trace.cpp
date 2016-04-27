@@ -117,7 +117,7 @@ namespace Project2
         return this->m_stream;
     }
     
-    void Trace::SetStream(const shared_ptr<ofstream> stream)
+    void Trace::SetStream(const shared_ptr<ofstream>& stream)
     {
         this->m_stream = stream;
     }

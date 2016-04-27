@@ -38,7 +38,7 @@ namespace Project2
         return *this;
     }
     
-    void RndGen::SetEngine(const shared_ptr<default_random_engine> engine)
+    void RndGen::SetEngine(const shared_ptr<default_random_engine>& engine)
     {
         this->m_engine = engine;
     }

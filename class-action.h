@@ -30,7 +30,7 @@ namespace Project2
              * @param obj The object that the function will be called for.
              * @param func The function that will be called for the object.
              */
-            ClassAction(shared_ptr<DataType> obj, void (DataType::*func)());
+            ClassAction(const shared_ptr<DataType>& obj, void (DataType::* const& func)());
             /**
              * Gets a pointer to the function that will be called for the object.
              * @returns A pointer to the function.
@@ -45,7 +45,7 @@ namespace Project2
              * Sets the function that will be called for the object.
              * @param func The function.
              */
-            virtual void SetFunc(void (DataType::*func)());
+            virtual void SetFunc(void (DataType::* const& func)());
             /**
              * Sets the object that the function will be called for.
              * @param obj The object.
@@ -67,7 +67,7 @@ namespace Project2
     { }
     
     template <class DataType>
-    ClassAction<DataType>::ClassAction(shared_ptr<DataType> obj, void(DataType::*func)())
+    ClassAction<DataType>::ClassAction(const shared_ptr<DataType>& obj, void(DataType::* const& func)())
     {
         this->SetFunc(func);
         this->SetObj(obj);
@@ -92,7 +92,7 @@ namespace Project2
     }
     
     template <class DataType>
-    void ClassAction<DataType>::SetFunc(void(DataType::*func)())
+    void ClassAction<DataType>::SetFunc(void(DataType::* const& func)())
     {
         this->m_func = func;
     }

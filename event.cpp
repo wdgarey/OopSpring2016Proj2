@@ -17,7 +17,7 @@ namespace Project2
           m_time(SimTime())
     { }
     
-    Event::Event(const uint32_t& id, const SimTime& time, const shared_ptr<Action> action)
+    Event::Event(const uint32_t& id, const SimTime& time, const shared_ptr<Action>& action)
     {
         this->SetId(id);
         this->SetTime(time);
@@ -53,26 +53,26 @@ namespace Project2
         return this->m_action;
     }
     
-    void Event::SetAction(const shared_ptr<Action> action)
-    {
-        this->m_action = action;
-    }
-    
     uint32_t Event::GetId() const
     {
         return this->m_id;
+    }
+      
+    SimTime Event::GetTime() const
+    {
+        return this->m_time;
+    }
+    
+    void Event::SetAction(const shared_ptr<Action>& action)
+    {
+        this->m_action = action;
     }
     
     void Event::SetId(const uint32_t& id)
     {
         this->m_id = id;
     }
-    
-    SimTime Event::GetTime() const
-    {
-        return this->m_time;
-    }
-    
+  
     void Event::SetTime(const SimTime& time)
     {
         this->m_time = time;

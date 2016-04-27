@@ -44,7 +44,7 @@ namespace Project2
          * @param action The action to invoke at the scheduled time.
          * @return The ID of the event.
          */
-        static uint32_t Schedule(const SimTime& time, const shared_ptr<Action> action);
+        static uint32_t Schedule(const SimTime& time, const shared_ptr<Action>& action);
     private:
         static Simulator s_instance; /// The static instance of the simulator.
     public:
@@ -63,7 +63,7 @@ namespace Project2
          * @param action The action to invoke at the scheduled time.
          * @return The ID of the event.
          */
-        virtual uint32_t AddEvent(const SimTime& time, const shared_ptr<Action> action);
+        virtual uint32_t AddEvent(const SimTime& time, const shared_ptr<Action>& action);
         /**
          * Gets the time of the event that will be executed next.
          * @return The simulation time.

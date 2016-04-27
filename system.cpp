@@ -37,7 +37,7 @@ namespace Project2
         this->Copy(src);
     }
     
-    void System::AddServer(const shared_ptr<Server> server)
+    void System::AddServer(const shared_ptr<Server>& server)
     {
         shared_ptr<vector<shared_ptr<Server>>> servers = this->GetServers();
         
@@ -181,12 +181,12 @@ namespace Project2
         }
     }
     
-    void System::SetCalls(const shared_ptr<CallQueue> calls)
+    void System::SetCalls(const shared_ptr<CallQueue>& calls)
     {
         this->m_calls = calls;
     }
     
-    void System::SetServers(const shared_ptr<vector<shared_ptr<Server> > > servers)
+    void System::SetServers(const shared_ptr<vector<shared_ptr<Server>>>& servers)
     {
         this->m_servers = servers;
     }

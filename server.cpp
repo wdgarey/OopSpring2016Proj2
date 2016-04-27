@@ -29,11 +29,10 @@ namespace Project2
     Server::Server()
         : m_currCall(0),
           m_id(0),
-          m_owner(0),
           m_rnd(0)
     { }
     
-    Server::Server(const uint32_t& id, System* owner, shared_ptr<NormRndGen> rnd)
+    Server::Server(const uint32_t& id, const weak_ptr<System>& owner, const shared_ptr<NormRndGen>& rnd)
         : m_currCall(0)
     {
         this->SetId(id);
@@ -51,7 +50,7 @@ namespace Project2
         return this->m_id;
     }
     
-    System* Server::GetOwner() const
+    weak_ptr<System> Server::GetOwner() const
     {
         return this->m_owner;
     }
@@ -94,12 +93,12 @@ namespace Project2
         this->m_id = id;
     }
     
-    void Server::SetOwner(System* owner)
+    void Server::SetOwner(const weak_ptr<System>& owner)
     {
         this->m_owner = owner;
     }
     
-    void Server::SetRnd(const shared_ptr<NormRndGen> rnd)
+    void Server::SetRnd(const shared_ptr<NormRndGen>& rnd)
     {
         this->m_rnd = rnd;
     }
@@ -145,7 +144,7 @@ namespace Project2
     void Server::Copy(const Server& src)
     {
         uint32_t id = src.GetId();
-        System* owner = src.GetOwner();
+        weak_ptr<System> owner = src.GetOwner();
         shared_ptr<Call> theirCall = src.GetCurrCall();
         shared_ptr<NormRndGen> theirRnd = src.GetRnd();
         
@@ -176,7 +175,7 @@ namespace Project2
         
         Trace::WriteLineToInst(ss.str());
 #endif
-            System* owner = this->GetOwner();
+            shared_ptr<System> owner = this->GetOwner().lock();
             shared_ptr<Call> currCall = this->GetCurrCall();
             
             owner->ReceiveCallProcessedNotification(*currCall);
@@ -213,7 +212,7 @@ namespace Project2
     {
         Call call;
         bool newCall = false;
-        System* owner = this->GetOwner();
+        shared_ptr<System> owner = this->GetOwner().lock();
 #ifdef TRACE
         uint32_t id = this->GetId();
         
@@ -300,7 +299,7 @@ namespace Project2
         }
     }
     
-    void Server::SetCurrCall(const shared_ptr<Call> currCall)
+    void Server::SetCurrCall(const shared_ptr<Call>& currCall)
     {
         this->m_currCall = currCall;
     }
