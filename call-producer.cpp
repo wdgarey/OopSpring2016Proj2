@@ -24,20 +24,22 @@
 namespace Project2
 {
     CallProducer::CallProducer()
-        : m_nextSeq(1),
+        : m_chanceGen(0),
+          m_nextSeq(1),
           m_producing(false),
-          m_rnd(0),
+          m_productionRnd(0),
           m_start(SimTime()),
           m_stop(SimTime()),
           m_taker(0)
     { }
     
-    CallProducer::CallProducer(const shared_ptr<ExpRndGen>& rnd, const shared_ptr<CallTaker>& taker)
+    CallProducer::CallProducer(const shared_ptr<ChanceGen>& chanceGen, const shared_ptr<ExpRndGen>& rnd, const shared_ptr<CallTaker>& taker)
         : m_nextSeq(1),
           m_producing(false),
           m_start(SimTime()),
           m_stop(SimTime())
     {
+        this->SetChanceGen(chanceGen);
         this->SetRnd(rnd);
         this->SetTaker(taker);
     }
@@ -47,32 +49,19 @@ namespace Project2
         this->Copy(src);
     }
     
-    shared_ptr<ExpRndGen> CallProducer::GetRnd() const
+    shared_ptr<ChanceGen> CallProducer::GetChanceGen() const
     {
-        return this->m_rnd;
+        return this->m_chanceGen;
+    }
+    
+    shared_ptr<ExpRndGen> CallProducer::GetProductionRnd() const
+    {
+        return this->m_productionRnd;
     }
     
     shared_ptr<CallTaker> CallProducer::GetTaker() const
     {
         return this->m_taker;
-    }
-    
-    bool CallProducer::HasRnd() const
-    {
-        shared_ptr<ExpRndGen> rnd = this->GetRnd();
-        
-        bool hasRnd = (rnd != 0);
-        
-        return hasRnd;
-    }
-    
-    bool CallProducer::HasTaker() const
-    {
-        shared_ptr<CallTaker> taker = this->GetTaker();
-        
-        bool hasTaker = (taker != 0);
-        
-        return hasTaker;
     }
     
     bool CallProducer::IsProducing() const
@@ -91,10 +80,15 @@ namespace Project2
         
         return *this;
     }
+    
+    void CallProducer::SetChanceGen(const shared_ptr<ChanceGen>& chanceGen)
+    {
+        this->m_chanceGen = chanceGen;
+    }
 
     void CallProducer::SetRnd(const shared_ptr<ExpRndGen>& rnd)
     {
-        this->m_rnd = rnd;
+        this->m_productionRnd = rnd;
     }
     
     void CallProducer::SetTaker(const shared_ptr<CallTaker>& taker)
@@ -139,15 +133,18 @@ namespace Project2
     
     void CallProducer::Copy(const CallProducer& src)
     {
+        shared_ptr<ChanceGen> theirChanceGen = src.GetChanceGen();
         uint32_t nextSeq = src.GetNextSeq();
         bool producing = src.GetProducing();
-        shared_ptr<ExpRndGen> theirRnd = src.GetRnd();
+        shared_ptr<ExpRndGen> theirRnd = src.GetProductionRnd();
         SimTime start = src.GetStart();
         SimTime stop = src.GetStop();
         shared_ptr<CallTaker> taker = src.GetTaker();
         
+        shared_ptr<ChanceGen> myChanceGen = make_shared<ChanceGen>(*theirChanceGen);
         shared_ptr<ExpRndGen> myRnd = make_shared<ExpRndGen>(*theirRnd);
         
+        this->SetChanceGen(myChanceGen);
         this->SetNextSeq(nextSeq);
         this->SetProducing(producing);
         this->SetRnd(myRnd);
@@ -187,10 +184,9 @@ namespace Project2
     
     void CallProducer::Produce()
     {
-        if (this->HasTaker())
-        {
-            uint32_t id = this->NextSeq();
-            shared_ptr<CallTaker> taker = this->GetTaker();
+        uint32_t id = this->NextSeq();
+        shared_ptr<ChanceGen> chanceGen = this->GetChanceGen();
+        shared_ptr<CallTaker> taker = this->GetTaker();
 #ifdef TRACE
         stringstream ss;
         
@@ -198,10 +194,11 @@ namespace Project2
         
         Trace::WriteLineToInst(ss.str());
 #endif
-            Call call(id, true);
-            
-            taker->TakeCall(call);
-        }
+        bool subscriber = chanceGen->Next();
+        
+        Call call(id, subscriber);
+
+        taker->TakeCall(call);
         
         this->ScheduleNextProd();
     }
@@ -226,17 +223,13 @@ namespace Project2
             {
                 nextTime = start;
             }
-            else if (this->HasRnd())
+            else
             {
-                shared_ptr<ExpRndGen> rnd = this->GetRnd();
+                shared_ptr<ExpRndGen> rnd = this->GetProductionRnd();
                 
                 double step = rnd->Next();
                 
                 nextTime = curr + SimTime (step);
-            }
-            else
-            {
-                nextTime = curr + SimTime(1);
             }
             
             Simulator::Schedule(nextTime, action);

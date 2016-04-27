@@ -11,6 +11,7 @@
 
 #include "call.h"
 #include "call-taker.h"
+#include "chance-gen.h"
 #include "sim-time.h"
 #include "exp-rnd-gen.h"
 
@@ -30,35 +31,31 @@ namespace Project2
         CallProducer();
         /**
          * Creates an instance of the CallProducer class.
-         * @param rnd The random number generator to use.
+         * @param chanceGen The chance generator to use for determining if a caller is a subscriber.
+         * @param productionRnd The random number generator for producing calls.
          * @param taker The object responsible for taking the calls.
          */
-        CallProducer(const shared_ptr<ExpRndGen>& rnd, const shared_ptr<CallTaker>& taker);
+        CallProducer(const shared_ptr<ChanceGen>& chanceGen, const shared_ptr<ExpRndGen>& productionRnd, const shared_ptr<CallTaker>& taker);
         /**
          * The copy constructor of the call producer class.
          * @param src The instance to copy.
          */
         CallProducer(const CallProducer& src);
         /**
+         * Gets the chance generator used to determine if caller is a subscriber.
+         * @return The random generator.
+         */
+        virtual shared_ptr<ChanceGen> GetChanceGen() const;
+        /**
          * Gets the random generator used to schedule when calls are produced.
          * @return The random generator.
          */
-        virtual shared_ptr<ExpRndGen> GetRnd() const;
+        virtual shared_ptr<ExpRndGen> GetProductionRnd() const;
         /**
          * Gets the object responsible for taking the producer's calls.
          * @return The object responsible for taking the calls.
          */
         virtual shared_ptr<CallTaker> GetTaker() const;
-        /**
-         * Indicates whether or not a random number generator has been given.
-         * @return True, if a random number generator has been given.
-         */
-        virtual bool HasRnd() const;
-        /**
-         * Indicates whether or not the producer has an object to take its calls.
-         * @return True, if it has an object to take its calls.
-         */
-        virtual bool HasTaker() const;
         /**
          * Indicates whether or not the call producer is producing calls.
          * @return True, if the call producer is producing calls.
@@ -71,10 +68,15 @@ namespace Project2
          */
         virtual CallProducer& operator =(const CallProducer& src);
         /**
-         * Sets the random generator used to schedule when calls are produced.
-         * @param rnd The random generator.
+         * Sets the chance generator to use for determining if a caller is a subscriber.
+         * @param chanceGen The chance generator.
          */
-        virtual void SetRnd(const shared_ptr<ExpRndGen>& rnd);
+        virtual void SetChanceGen(const shared_ptr<ChanceGen>& chanceGen);
+        /**
+         * Sets the random generator used to schedule when calls are produced.
+         * @param productionRnd The random generator.
+         */
+        virtual void SetRnd(const shared_ptr<ExpRndGen>& productionRnd);
         /**
          * Sets the object responsible for taking the producer's calls.
          * @param taker The object responsible for taking calls.
@@ -150,9 +152,10 @@ namespace Project2
          */
         virtual void SetStop(const SimTime& stop);
     private:
+        shared_ptr<ChanceGen> m_chanceGen; /// The object used to determine if a caller is a subscriber.
         uint32_t m_nextSeq; /// The ID that will be assigned to the next call that is produced.
         bool m_producing; /// A flag that indicates if the producer is producing calls.
-        shared_ptr<ExpRndGen> m_rnd; /// The random generator to use to schedule when to produce calls.
+        shared_ptr<ExpRndGen> m_productionRnd; /// The random generator to use to schedule when to produce calls.
         SimTime m_start; /// The time at which to stop producing calls.
         SimTime m_stop; /// The time at which to start producing calls.
         shared_ptr<CallTaker> m_taker; /// The object responsible for taking calls.

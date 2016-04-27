@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include "call-producer.h"
+#include "chance-gen.h"
 #include "exp-rnd-gen.h"
 #include "server.h"
 #include "sim-time.h"
@@ -47,15 +48,16 @@ int main()
         uint32_t seed = (index + 1);
         uint32_t id = (index + 1);
         weak_ptr<System> sysWeak = sys;
-        shared_ptr<NormRndGen> rnd = make_shared<NormRndGen>(seed, avgServTime, stdDevServTime);
+        shared_ptr<NormRndGen> rnd = make_shared<NormRndGen>(avgServTime, stdDevServTime, seed);
         shared_ptr<Server> server = make_shared<Server>(id, sysWeak, rnd);
         
         sys->AddServer(server);
     }
     
-    shared_ptr<ExpRndGen> callCreationRnd = make_shared<ExpRndGen>(4, SimTime(1, 0, 0).GetSeconds(), callsPerHour);
+    shared_ptr<ChanceGen> chanceGen = make_shared<ChanceGen>(0.95, 10);
+    shared_ptr<ExpRndGen> callCreationRnd = make_shared<ExpRndGen>(SimTime(1, 0, 0).GetSeconds(), callsPerHour, 4);
     
-    shared_ptr<CallProducer> producer = make_shared<CallProducer>(callCreationRnd, sys);
+    shared_ptr<CallProducer> producer = make_shared<CallProducer>(chanceGen, callCreationRnd, sys);
     
     producer->Start(SimTime(0), SimTime(24, 0, 0));
     

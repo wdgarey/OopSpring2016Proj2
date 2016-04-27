@@ -13,7 +13,7 @@ using namespace std;
 
 namespace Project2
 {
-    NormRndGen::NormRndGen(const uint32_t& seed, const double& avg, const double& stdDev)
+    NormRndGen::NormRndGen(const double& avg, const double& stdDev, const uint32_t& seed)
         : RndGen(seed),
           m_dist(0)
     {
@@ -55,7 +55,7 @@ namespace Project2
         return *this;
     }
     
-    void NormRndGen::SetDist(const shared_ptr<normal_distribution<> > dist)
+    void NormRndGen::SetDist(const shared_ptr<normal_distribution<> >& dist)
     {
         this->m_dist = dist;
     }

@@ -7,8 +7,11 @@
 #define CALL_H
 
 #include <cstdint>
+#include <iostream>
 
 #include "sim-time.h"
+
+using namespace std;
 
 namespace Project2
 {
@@ -131,6 +134,13 @@ namespace Project2
         bool m_subscriber; /// A flag that indicates if the caller is a subscriber.
         SimTime m_served; /// The time at which the call received service.
     };
+    /**
+     * The overloaded output stream operator of the Call class.
+     * @param out The output stream to write to.
+     * @param call The call to write.
+     * @return The output stream that was written to.
+     */
+    ostream& operator <<(ostream& out, const Call& call);
 }
 
 #endif

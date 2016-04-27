@@ -23,11 +23,11 @@ namespace Project2
     public:
         /**
          * Creates an instance of the ExpRndGen class.
-         * @param seed The seed to use.
          * @param bound The bound to apply the lambda to.
          * @param lambda The lambda to use.
+         * @param seed The seed to use.
          */
-        ExpRndGen(const uint32_t& seed, const double& bound, const double& lambda);
+        ExpRndGen(const double& bound, const double& lambda, const uint32_t& seed = 1);
         /**
          * The copy constructor of the ExpRndGen class.
          * @param src The instance to copy.

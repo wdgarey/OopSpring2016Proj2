@@ -23,11 +23,11 @@ namespace Project2
     public:
         /**
          * Creates an instance of the NormRndGen class.
-         * @param seed The seed to use.
          * @param avg The average.
          * @param stdDev The standard deviation.
+         * @param seed The seed to use.
          */
-        NormRndGen(const uint32_t& seed, const double& avg, const double& stdDev);
+        NormRndGen(const double& avg, const double& stdDev,const uint32_t& seed = 1);
         /**
          * The copy constructor of the NormRndGen class.
          * @param src The instance to copy.
@@ -53,7 +53,7 @@ namespace Project2
          * Sets the normal distribution.
          * @param dist The normal distribution.
          */
-        virtual void SetDist(const shared_ptr<normal_distribution<> > dist);
+        virtual void SetDist(const shared_ptr<normal_distribution<> >& dist);
     protected:
         /**
          * Deep copies the given NormRndGen.

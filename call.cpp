@@ -67,8 +67,7 @@ namespace Project2
     bool Call::HasPriorityOver(const Call& other) const
     {
         bool higherPriority = false;
-        bool sameLvl = (this->IsSubscriber() && other.IsSubscriber())
-                        || (!this->IsSubscriber() && !other.IsSubscriber());
+        bool sameLvl = (this->IsSubscriber() == other.IsSubscriber());
         
         if (sameLvl)
         {
@@ -81,7 +80,23 @@ namespace Project2
         {
             higherPriority = true;
         }
+#ifdef TRACE
+        Call higher = other;
+        Call lower = *this;
         
+        if (higherPriority)
+        {
+            higher = *this;
+            lower = other;
+        }
+        
+        stringstream ss;
+        
+        ss << higher << " has priority over " << lower;
+        
+        Trace::WriteLineToInst(ss.str());
+        
+#endif
         return higherPriority;
     }
     
@@ -189,5 +204,20 @@ namespace Project2
     void Call::SetSubscriber(const bool& subscriber)
     {
         this->m_subscriber = subscriber;
+    }
+    
+    ostream& operator <<(ostream& out, const Call& call)
+    {
+        uint32_t id = call.GetId();
+        bool isSubscriber = call.IsSubscriber();
+        SimTime arrival = call.GetQueued();
+        
+        out << "Call(";
+        out << "id=" << id;
+        out << "," << "subscriber=" << isSubscriber;
+        out << "," << "arrived=" << arrival;
+        out << ")";
+        
+        return out;
     }
 }
