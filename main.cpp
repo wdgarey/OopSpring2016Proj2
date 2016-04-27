@@ -30,37 +30,41 @@ using namespace Project2;
 int main()
 {
 #ifdef TRACE
-    Trace::OpenInst("trace.txt");
+    Trace::OpenInst("trace2.txt");
 #endif
     
     double callsPerHour = 25;
     int servers = 3;
-    double avgServTime = SimTime(0,6,0).GetSeconds();
-    double stdDevServTime = SimTime(0,2,0).GetSeconds();
+    double avgServTime = SimTime(0, 6, 0).GetSeconds();
+    double stdDevServTime = SimTime(0, 2, 0).GetSeconds();
     
     shared_ptr<System> sys = make_shared<System>();
     
-    for (int index = 0; index < servers; index++)
+    for (uint32_t index = 0; index < servers; index++)
     {
-        shared_ptr<NormRndGen> rnd = make_shared<NormRndGen>(avgServTime, stdDevServTime);
-        shared_ptr<Server> server = make_shared<Server>((index + 1), sys.get(), rnd);
+        uint32_t seed = (index + 1);
+        uint32_t id = (index + 1);
+        shared_ptr<NormRndGen> rnd = make_shared<NormRndGen>(seed, avgServTime, stdDevServTime);
+        shared_ptr<Server> server = make_shared<Server>(id, sys.get(), rnd);
         
         sys->AddServer(server);
     }
     
-    shared_ptr<ExpRndGen> rnd = make_shared<ExpRndGen>(3600, callsPerHour);
+    shared_ptr<ExpRndGen> rnd = make_shared<ExpRndGen>(4, SimTime(1, 0, 0).GetSeconds(), callsPerHour);
     
     shared_ptr<CallProducer> producer = make_shared<CallProducer>(rnd, sys);
     
-    producer->Start(SimTime(0), SimTime(24,0,0));
+    producer->Start(SimTime(0), SimTime(24, 0, 0));
     
     Simulator::Run(SimTime(0));
+    
+    SystemStats stats = sys->GetStats();
+    
+    cout << stats << endl << endl;
     
 #ifdef TRACE
     
     stringstream ss;
-    
-    SystemStats stats = sys->GetStats();
     
     ss << stats;
     

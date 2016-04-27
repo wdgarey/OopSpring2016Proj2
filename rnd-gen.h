@@ -21,8 +21,9 @@ namespace Project2
     public:
         /**
          * Creates an instance of the RndGen class.
+         * @param seed The seed to use.
          */
-        RndGen();
+        RndGen(const uint32_t& seed);
         /**
          * The copy constructor of the RndGen class.
          * @param src The instance to copy.

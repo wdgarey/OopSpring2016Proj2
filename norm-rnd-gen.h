@@ -23,10 +23,11 @@ namespace Project2
     public:
         /**
          * Creates an instance of the NormRndGen class.
+         * @param seed The seed to use.
          * @param avg The average.
          * @param stdDev The standard deviation.
          */
-        NormRndGen(const double& avg, const double& stdDev);
+        NormRndGen(const uint32_t& seed, const double& avg, const double& stdDev);
         /**
          * The copy constructor of the NormRndGen class.
          * @param src The instance to copy.

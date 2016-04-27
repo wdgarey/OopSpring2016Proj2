@@ -10,10 +10,10 @@
 
 namespace Project2
 {
-    RndGen::RndGen()
+    RndGen::RndGen(const uint32_t& seed)
         : m_engine (0)
     {
-        shared_ptr<default_random_engine> engine = make_shared<default_random_engine>();
+        shared_ptr<default_random_engine> engine = make_shared<default_random_engine>(seed);
         
         this->SetEngine(engine);
     }

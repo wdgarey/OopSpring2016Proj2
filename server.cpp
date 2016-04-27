@@ -3,7 +3,7 @@
  * Date: April 17, 2016
  */
 
-#define TRACE
+//#define TRACE
 
 #include <cstdint>
 #include <memory>

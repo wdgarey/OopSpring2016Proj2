@@ -11,8 +11,9 @@
 
 namespace Project2
 {
-    ExpRndGen::ExpRndGen(const double& bound, const double& lambda)
-        : m_bound(0),
+    ExpRndGen::ExpRndGen(const uint32_t& seed, const double& bound, const double& lambda)
+        : RndGen(seed),
+          m_bound(0),
           m_dist(0)
     {
         shared_ptr<exponential_distribution<> > dist = make_shared<exponential_distribution<> >(lambda);

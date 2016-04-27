@@ -13,8 +13,9 @@ using namespace std;
 
 namespace Project2
 {
-    NormRndGen::NormRndGen(const double& avg, const double& stdDev)
-        : m_dist(0)
+    NormRndGen::NormRndGen(const uint32_t& seed, const double& avg, const double& stdDev)
+        : RndGen(seed),
+          m_dist(0)
     {
         shared_ptr<normal_distribution<> > dist = make_shared<normal_distribution<> >(avg, stdDev);
         
