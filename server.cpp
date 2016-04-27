@@ -9,12 +9,12 @@
 #include <memory>
 
 #include "call.h"
+#include "class-action.h"
 #include "rnd-gen.h"
 #include "sim-time.h"
 #include "simulator.h"
 #include "system.h"
 #include "server.h"
-#include "server-action.h"
 
 #ifdef TRACE
 #include <sstream>
@@ -258,7 +258,8 @@ namespace Project2
     {
         SimTime increase(1);
         SimTime curr = Simulator::Now();
-        shared_ptr<ServerAction> action = make_shared<ServerAction>(this, ServerAction::Name::ServiceNextCall);
+        shared_ptr<Server> me = this->shared_from_this();
+        shared_ptr<Action> action = make_shared<ClassAction<Server> >(me, &Server::ServiceNextCall);
         
         if (this->HasRnd())
         {

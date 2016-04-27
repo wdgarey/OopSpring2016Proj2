@@ -8,10 +8,10 @@
 #include <cstdint>
 #include <memory>
 
-#include "call-producer-action.h"
 #include "call-producer.h"
 #include "call-taker.h"
 #include "call.h"
+#include "class-action.h"
 #include "exp-rnd-gen.h"
 #include "sim-time.h"
 #include "simulator.h"
@@ -218,7 +218,8 @@ namespace Project2
         else
         {
             SimTime nextTime;
-            shared_ptr<Action> action = make_shared<CallProducerAction>(this, CallProducerAction::Name::Produce);
+            shared_ptr<CallProducer> me = this->shared_from_this();
+            shared_ptr<Action> action = make_shared<ClassAction<CallProducer> >(me, &CallProducer::Produce);
             SimTime start = this->GetStart();
             
             if (start > curr)

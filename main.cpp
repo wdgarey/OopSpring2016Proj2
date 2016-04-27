@@ -50,9 +50,9 @@ int main()
     
     shared_ptr<ExpRndGen> rnd = make_shared<ExpRndGen>(3600, callsPerHour);
     
-    CallProducer producer(rnd, sys);
+    shared_ptr<CallProducer> producer = make_shared<CallProducer>(rnd, sys);
     
-    producer.Start(SimTime(0), SimTime(24,0,0));
+    producer->Start(SimTime(0), SimTime(24,0,0));
     
     Simulator::Run(SimTime(0));
     

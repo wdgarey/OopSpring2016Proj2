@@ -14,12 +14,14 @@
 #include "sim-time.h"
 #include "exp-rnd-gen.h"
 
+using namespace std;
+
 namespace Project2
 {
     /**
      * A class used to produce calls and given them to the call taker.
      */
-    class CallProducer
+    class CallProducer : public enable_shared_from_this<CallProducer>
     {
         /**
          * A class used to execute scheduled CallProducer actions.

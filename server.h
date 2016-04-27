@@ -19,7 +19,7 @@ namespace Project2
     /**
      * A class that represents a tech support representative.
      */
-    class Server
+    class Server : public enable_shared_from_this<Server>
     {
         /**
          * A class used to execute scheduled server actions.
