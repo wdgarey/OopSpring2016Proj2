@@ -3,7 +3,7 @@
  * Date: April 17, 2016
  */
 
-//#define TRACE
+#include "definitions.h"
 
 #include <cstdint>
 #include <memory>
@@ -16,7 +16,7 @@
 #include "sim-time.h"
 #include "simulator.h"
 
-#ifdef TRACE
+#ifdef CALL_PRODUCER_TRACE
 #include <sstream>
 #include "trace.h"
 #endif 
@@ -100,7 +100,7 @@ namespace Project2
     {
         if (!this->IsProducing())
         {
-#ifdef TRACE
+#ifdef CALL_PRODUCER_TRACE
         stringstream ss;
         
         ss << "Call producer " << "starting to produce calls" << ".";
@@ -120,7 +120,7 @@ namespace Project2
     {
         if (this->IsProducing())
         {
-#ifdef TRACE
+#ifdef CALL_PRODUCER_TRACE
         stringstream ss;
         
         ss << "Call producer " << "stopping" << ".";
@@ -187,7 +187,7 @@ namespace Project2
         uint32_t id = this->NextSeq();
         shared_ptr<ChanceGen> chanceGen = this->GetChanceGen();
         shared_ptr<CallTaker> taker = this->GetTaker();
-#ifdef TRACE
+#ifdef CALL_PRODUCER_TRACE
         stringstream ss;
         
         ss << "Call producer " << "producing call " << id << ".";
@@ -233,7 +233,7 @@ namespace Project2
             }
             
             Simulator::Schedule(nextTime, action);
-#ifdef TRACE
+#ifdef CALL_PRODUCER_TRACE
         stringstream ss;
         
         ss << "Call producer " << "next production at " << nextTime << ".";

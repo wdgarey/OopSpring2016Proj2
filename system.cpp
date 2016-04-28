@@ -3,7 +3,7 @@
  * Date: April 17, 2016
  */
 
-//#define TRACE
+#include "definitions.h"
 
 #include <memory>
 #include <vector>
@@ -15,7 +15,7 @@
 #include "system.h"
 #include "server.h"
 
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
 #include <sstream>
 
 #include "trace.h"
@@ -62,7 +62,7 @@ namespace Project2
     void System::TakeCall(Call& call)
     {
         shared_ptr<CallQueue> calls = this->GetCalls();
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
         uint32_t id = call.GetId();
         
         stringstream ss;
@@ -82,7 +82,7 @@ namespace Project2
     void System::ReceiveCallProcessedNotification(Call& call)
     {
         SystemStats stats = this->GetStats();
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
         uint32_t id = call.GetId();
         
         stringstream ss;
@@ -101,7 +101,7 @@ namespace Project2
     bool System::TryGiveCallForProcessing(Call& call)
     {
         shared_ptr<CallQueue> calls = this->GetCalls();
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
         stringstream ss;
         
         ss << "System trying to retrieve call for processing" << ".";
@@ -112,7 +112,7 @@ namespace Project2
         
         if (success)
         {
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
         uint32_t id = call.GetId();
         
         stringstream ss;
@@ -125,7 +125,7 @@ namespace Project2
         }
         else
         {
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
         uint32_t id = call.GetId();
         
         stringstream ss;
@@ -166,7 +166,7 @@ namespace Project2
     void System::SendCallReadyNotification()
     {
         shared_ptr<vector<shared_ptr<Server>>> servers = this->GetServers();
-#ifdef TRACE
+#ifdef SYSTEM_TRACE
         stringstream ss;
         
         ss << "System sending call ready notifications" << ".";

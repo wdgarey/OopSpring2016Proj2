@@ -3,7 +3,7 @@
  * Date: April 17, 2016
  */
 
-//#define TRACE
+#include "definitions.h"
 
 #include <cstdint>
 #include <memory>
@@ -16,7 +16,7 @@
 #include "system.h"
 #include "server.h"
 
-#ifdef TRACE
+#ifdef SERVER_TRACE
 #include <sstream>
 
 #include "trace.h"
@@ -105,7 +105,7 @@ namespace Project2
     
     void Server::ReceiveCallReadyNotification()
     {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -116,7 +116,7 @@ namespace Project2
 #endif
         if (!this->IsBusy())
         {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -129,7 +129,7 @@ namespace Project2
         }
         else
         {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -166,7 +166,7 @@ namespace Project2
     {
         if (this->IsBusy())
         {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -182,7 +182,7 @@ namespace Project2
         }
         else
         {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -196,7 +196,7 @@ namespace Project2
     
     void Server::ReleaseCall()
     {
-    #ifdef TRACE
+    #ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -213,7 +213,7 @@ namespace Project2
         Call call;
         bool newCall = false;
         shared_ptr<System> owner = this->GetOwner().lock();
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -224,7 +224,7 @@ namespace Project2
 #endif        
         if (owner->TryGiveCallForProcessing(call))
         {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -239,7 +239,7 @@ namespace Project2
         }
         else
         {
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;
@@ -270,7 +270,7 @@ namespace Project2
         }
         
         SimTime nextTime = curr + increase;
-#ifdef TRACE
+#ifdef SERVER_TRACE
         uint32_t id = this->GetId();
         
         stringstream ss;

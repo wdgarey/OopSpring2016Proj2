@@ -3,9 +3,9 @@
  * Date: April 16, 2016
  */
 
-//#define TRACE
+#include "definitions.h"
 
-#ifdef TRACE
+#ifdef CALL_TRACE
 #include <sstream>
 #endif
 
@@ -80,7 +80,7 @@ namespace Project2
         {
             higherPriority = true;
         }
-#ifdef TRACE
+#ifdef CALL_TRACE
         Call higher = other;
         Call lower = *this;
         
@@ -117,7 +117,7 @@ namespace Project2
     void Call::Queued()
     {
         SimTime queued = Simulator::Now();
-#ifdef TRACE
+#ifdef CALL_TRACE
         uint32_t id = this->GetId();
         stringstream ss;
         
@@ -131,7 +131,7 @@ namespace Project2
     void Call::Released()
     {
         SimTime released = Simulator::Now();
-#ifdef TRACE
+#ifdef CALL_TRACE
         uint32_t id = this->GetId();
         stringstream ss;
         
@@ -145,7 +145,7 @@ namespace Project2
     void Call::Serviced()
     {
         SimTime served = Simulator::Now();
-#ifdef TRACE
+#ifdef CALL_TRACE
         uint32_t id = this->GetId();
         stringstream ss;
         

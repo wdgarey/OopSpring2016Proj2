@@ -3,7 +3,7 @@
  * Date: April 14, 2016
  */
 
-//#define TRACE
+#include "definitions.h"
 
 #include <cstdlib>
 #include <memory>

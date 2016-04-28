@@ -3,7 +3,7 @@
  * Date: April 16, 2016
  */
 
-//#define TRACE
+#include "definitions.h"
 
 #include <cstdint>
 #include <functional>
@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <vector>
 
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
 #include <sstream>
 #endif
 
@@ -84,7 +84,7 @@ namespace Project2
         
         sched->push(event);
         
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
         stringstream ss;
         
         ss << "Event " << eventId << " scheduled for time : " << time;
@@ -136,7 +136,7 @@ namespace Project2
     
     void Simulator::Start()
     {
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
         stringstream ss;
         
         ss << "Starting simulator" << "" << ".";
@@ -150,7 +150,7 @@ namespace Project2
     
     void Simulator::Stop()
     {
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
         stringstream ss;
         
         ss << "Stopping simulator" << "" << ".";
@@ -216,7 +216,7 @@ namespace Project2
                     }
                     
                     this->SetCurr(eventTime);
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
         stringstream ss;
         
         ss << "Executing event " << event.GetId() << " at " << eventTime;
@@ -230,7 +230,7 @@ namespace Project2
                 else
                 {
                     this->Stop();
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
                     Trace::WriteLineToInst("Stopping simulation because stop time was exceeded.");
 #endif
                 }
@@ -238,7 +238,7 @@ namespace Project2
             else
             {
                 this->Stop();
-#ifdef TRACE
+#ifdef SIMULATOR_TRACE
                 Trace::WriteLineToInst("Stopping simulation b/c event queue is empty.");
 #endif
             }
