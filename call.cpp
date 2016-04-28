@@ -109,7 +109,7 @@ namespace Project2
     
     bool Call::operator <(const Call& call) const
     {
-        bool less = !this->HasPriorityOver(call);
+        bool less = call.HasPriorityOver(*this);
         
         return less;
     }

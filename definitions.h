@@ -7,8 +7,9 @@
 #define TRACE
 #endif
 
-#ifndef CALL_PRODUCTION_TRACE
-#define CALL_PRODUCTION_TRACE
+/*
+#ifndef CALL_PRODUCER_TRACE
+#define CALL_PRODUCER_TRACE
 #endif
 
 #ifndef CALL_TRACE
@@ -26,3 +27,4 @@
 #ifndef SYSTEM_TRACE
 #define SYSTEM_TRACE
 #endif
+*/

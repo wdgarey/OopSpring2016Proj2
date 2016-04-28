@@ -87,7 +87,7 @@ namespace Project2
 #ifdef SIMULATOR_TRACE
         stringstream ss;
         
-        ss << "Event " << eventId << " scheduled for time : " << time;
+        ss << "Event " << eventId << " scheduled for: " << time;
         
         Trace::WriteLineToInst(ss.str());
 #endif
@@ -219,7 +219,7 @@ namespace Project2
 #ifdef SIMULATOR_TRACE
         stringstream ss;
         
-        ss << "Executing event " << event.GetId() << " at " << eventTime;
+        ss << "Event " << event.GetId() << " executed at: " << eventTime;
         
         Trace::WriteLineToInst(ss.str());
 #endif                    
