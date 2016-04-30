@@ -33,7 +33,7 @@ using namespace Project2;
 int main()
 {
 #ifdef TRACE
-    Trace::OpenInst("trace2.txt");
+    Trace::OpenInst("trace.txt");
 #endif
 
     double callsPerHour = 25; // 25 calls arrive per hour

@@ -208,7 +208,7 @@ namespace Project2
         SimTime curr = Simulator::Now();
         SimTime stop = this->GetStop();
         
-        if (stop.GetSeconds() > 0.0 && curr > stop)
+        if (stop.GetSeconds() > 0.0 && stop < curr)
         {
             this->Stop();
         }
@@ -219,7 +219,7 @@ namespace Project2
             shared_ptr<Action> action = make_shared<ClassAction<CallProducer> >(me, &CallProducer::Produce);
             SimTime start = this->GetStart();
             
-            if (start > curr)
+            if (curr < start)
             {
                 nextTime = start;
             }

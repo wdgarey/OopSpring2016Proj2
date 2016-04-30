@@ -48,17 +48,17 @@ namespace Project2
          */
         virtual double GetSeconds() const;
         /**
-         * Indicates whether or not this time is later than the given time.
+         * Indicates whether or not this time is before the given time.
          * @param other The given time.
-         * @return True, if this time is later.
+         * @return True, if this time is before the given time.
          */
-        virtual bool IsLaterThan(const SimTime& other) const;
+        virtual bool IsBefore(const SimTime& other) const;
         /**
-         * Indicates whether or not this time is later/younger than the given time.
+         * Indicates whether or not this time is eariler/older than the given time.
          * @param other The given time.
-         * @return True, if this time is earlier/younger than the given time.
+         * @return True, if this time is earlier/older than the given time.
          */
-        virtual bool operator >(const SimTime& other) const;
+        virtual bool operator <(const SimTime& other) const;
         /**
          * The overloaded subtraction operator for the SimTime class.
          * @param other The time to subtract.

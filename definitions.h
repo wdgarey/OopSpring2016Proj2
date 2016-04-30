@@ -7,7 +7,6 @@
 #define TRACE
 #endif
 
-/*
 #ifndef CALL_PRODUCER_TRACE
 #define CALL_PRODUCER_TRACE
 #endif
@@ -27,4 +26,3 @@
 #ifndef SYSTEM_TRACE
 #define SYSTEM_TRACE
 #endif
-*/

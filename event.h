@@ -36,17 +36,17 @@ namespace Project2
          */
         virtual void InvokeAction();
         /**
-         * Indicates if the time of this event is later than the given event's.
+         * Indicates whether or not this even occurs before the given event. 
          * @param other The given event.
-         * @return True, if the time of this event is later (or younger).
+         * @return True, if this event should occur before the given event.
          */
-        virtual bool IsLaterThan(const Event& other) const;
+        virtual bool IsBefore(const Event& other) const;
         /**
-         * Indicates if this event should occur after the given event.
+         * Indicates if this event should occur before the given event.
          * @param other The given event.
-         * @return True, if this event should occur after.
+         * @return True, if this event should occur before the given.
          */
-        virtual bool operator >(const Event& other) const;
+        virtual bool operator <(const Event& other) const;
         /**
          * Gets the action that should be invoked.
          * @return The action.

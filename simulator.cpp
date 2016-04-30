@@ -6,7 +6,6 @@
 #include "definitions.h"
 
 #include <cstdint>
-#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -65,7 +64,7 @@ namespace Project2
           m_sched (0),
           m_stopTime (SimTime())
     {
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched(new priority_queue<Event,vector<Event>,greater<Event> >());
+        shared_ptr<priority_queue<Event> > sched(new priority_queue<Event>());
         
         this->SetSched(sched);
     }
@@ -80,7 +79,7 @@ namespace Project2
         uint32_t eventId = this->NextEventId();
         Event event(eventId, time, action);
         
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched = this->GetSched();
+        shared_ptr<priority_queue<Event> > sched = this->GetSched();
         
         sched->push(event);
         
@@ -100,9 +99,9 @@ namespace Project2
         uint32_t nextEventId = src.GetNextEventId();
         bool running = src.GetRunning();
         SimTime stopTime = src.GetStopTime();
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> theirSched = src.GetSched();
+        shared_ptr<priority_queue<Event> > theirSched = src.GetSched();
         
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> mySched = make_shared<priority_queue<Event,vector<Event>,greater<Event>>>(*theirSched);
+        shared_ptr<priority_queue<Event> > mySched = make_shared<priority_queue<Event> >(*theirSched);
         
         this->SetNextEventId(nextEventId);
         this->SetRunning(running);
@@ -175,7 +174,7 @@ namespace Project2
         return this->m_running;
     }
     
-    shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> Simulator::GetSched() const
+    shared_ptr<priority_queue<Event> > Simulator::GetSched() const
     {
         return this->m_sched;
     }
@@ -196,7 +195,7 @@ namespace Project2
     
     void Simulator::Run()
     {
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> sched = this->GetSched();
+        shared_ptr<priority_queue<Event> > sched = this->GetSched();
         
         while (this->IsRunning())
         {
@@ -205,12 +204,12 @@ namespace Project2
                 SimTime stopTime = this->GetStopTime();
                 SimTime currTime = this->GetCurrTime();
 
-                if (stopTime.GetSeconds() == 0 || stopTime > currTime)
+                if (stopTime.GetSeconds() == 0 || currTime < stopTime)
                 {
                     Event event = sched->top();
                     SimTime eventTime = event.GetTime();
                     
-                    if (currTime > eventTime)
+                    if (eventTime < currTime)
                     {
                         throw runtime_error("Missed event!");
                     }
@@ -260,7 +259,7 @@ namespace Project2
         this->m_running = running;
     }
     
-    void Simulator::SetSched(const shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>>& sched)
+    void Simulator::SetSched(const shared_ptr<priority_queue<Event> >& sched)
     {
         this->m_sched = sched;
     }

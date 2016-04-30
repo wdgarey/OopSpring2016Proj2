@@ -31,21 +31,21 @@ namespace Project2
         act->Invoke();
     }
     
-    bool Event::IsLaterThan(const Event& other) const
+    bool Event::IsBefore(const Event& other) const
     {
         SimTime myTime = this->GetTime();
         SimTime theirTime = other.GetTime();
         
-        bool laterThan = myTime > theirTime;
+		bool laterThan = myTime < theirTime;
         
         return laterThan;
     }
     
-    bool Event::operator >(const Event& other) const
+    bool Event::operator <(const Event& other) const
     {
-        bool greater = this->IsLaterThan(other);
+		bool less = other.IsBefore(*this);
         
-        return greater;
+        return less;
     }
     
     shared_ptr<Action> Event::GetAction() const

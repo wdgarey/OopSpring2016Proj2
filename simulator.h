@@ -113,7 +113,7 @@ namespace Project2
          * Gets the collection of events to execute.
          * @return The collection of events.
          */
-        virtual shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> GetSched () const;
+        virtual shared_ptr<priority_queue<Event> > GetSched () const;
         /**
          * Gets the time at which the simulation is supposed to stop.
          * @return The simulation time (a value of 0 means indefinite).
@@ -146,7 +146,7 @@ namespace Project2
          * Sets the collection of events to execute.
          * @param sched The collection of events.
          */
-        virtual void SetSched(const shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>>& sched);
+        virtual void SetSched(const shared_ptr<priority_queue<Event> >& sched);
         /**
          * Sets the time at which the simulation should stop.
          * @param stopTime The simulation time (a value of 0 means indefinite).
@@ -156,7 +156,7 @@ namespace Project2
         SimTime m_curr; /// The current time.
         uint32_t m_nextEventId; /// The ID of the next event that is created.
         bool m_running; /// A flag used to indicate if the simulator is running.
-        shared_ptr<priority_queue<Event,vector<Event>,greater<Event>>> m_sched; /// The schedule of events to execute.
+        shared_ptr<priority_queue<Event> > m_sched; /// The schedule of events to execute.
         SimTime m_stopTime; /// The time at which to stop the simulation.
     };
 }

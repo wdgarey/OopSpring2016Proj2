@@ -42,21 +42,21 @@ namespace Project2
         return this->m_seconds;
     }
     
-    bool SimTime::IsLaterThan(const SimTime& other) const
+    bool SimTime::IsBefore(const SimTime& other) const
     {
         double mySeconds = this->GetSeconds();
         double theirSeconds = other.GetSeconds();
         
-        bool laterThan = mySeconds > theirSeconds;
+        bool laterThan = mySeconds < theirSeconds;
         
         return laterThan;
     }
     
-    bool SimTime::operator >(const SimTime& other) const
+    bool SimTime::operator <(const SimTime& other) const
     {
-        bool greater = this->IsLaterThan(other);
+		bool less = this->IsBefore(other); 
         
-        return greater;
+        return less;
     }
     
     SimTime SimTime::operator -(const SimTime& other) const

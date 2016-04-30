@@ -74,7 +74,7 @@ namespace Project2
             SimTime myArrival = this->GetQueued();
             SimTime theirArrival = other.GetQueued();
                 
-            higherPriority = (theirArrival > myArrival);
+			higherPriority = (myArrival < theirArrival);
         }
         else if (this->IsSubscriber())
         {
